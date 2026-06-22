@@ -174,8 +174,7 @@ Mohon segera diproses lebih lanjut, terima kasih!`;
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-brand-blue bg-blue-50 border border-blue-100 uppercase tracking-widest mb-3"
           >
@@ -185,8 +184,7 @@ Mohon segera diproses lebih lanjut, terima kasih!`;
           
           <motion.h2 
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark tracking-tight mb-4"
           >
@@ -195,8 +193,7 @@ Mohon segera diproses lebih lanjut, terima kasih!`;
           
           <motion.p 
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-slate-600 font-medium"
           >

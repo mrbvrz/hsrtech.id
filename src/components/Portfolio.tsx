@@ -47,8 +47,7 @@ export default function Portfolio({ onNavigate, isStandalone = false }: Portfoli
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-brand-blue bg-blue-50/80 border border-blue-100/50 uppercase tracking-widest mb-3 backdrop-blur-sm"
           >
@@ -58,8 +57,7 @@ export default function Portfolio({ onNavigate, isStandalone = false }: Portfoli
           
           <motion.h2 
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl sm:text-4xl font-display font-bold text-brand-dark tracking-tight mb-4"
           >
@@ -68,8 +66,7 @@ export default function Portfolio({ onNavigate, isStandalone = false }: Portfoli
           
           <motion.p 
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-slate-600 font-medium"
           >

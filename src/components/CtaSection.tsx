@@ -25,8 +25,7 @@ export default function CtaSection({ className = '' }: CtaSectionProps) {
 
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full rounded-3xl bg-gradient-to-br from-white via-slate-50 to-emerald-50/20 border border-slate-200 shadow-[0_30px_80px_rgba(148,163,184,0.18)] relative overflow-hidden"
       >

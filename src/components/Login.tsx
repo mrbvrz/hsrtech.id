@@ -27,6 +27,7 @@ interface LoginProps {
 export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogout }: LoginProps) {
   const { openTerms, openPrivacy } = useLegalDrawer();
   // Login Panel State
+  const [displayName, setDisplayName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -1299,199 +1300,368 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
     );
   }
 
-  // ELSE: RETURN THE VISUALLY POLISHED LOGIN SCREEN
+  // ELSE: RETURN THE VISUALLY POLISHED SPLIT SCREEN LOGIN/REGISTER
+  const fillDemo = (role: 'admin' | 'teknisi') => {
+    if (role === 'admin') {
+      setDisplayName('Hasan Suryaman');
+      setUsername('admin@hsr.com');
+      setPassword('admin');
+    } else {
+      setDisplayName('John Marpaung');
+      setUsername('teknisi@hsr.com');
+      setPassword('teknisi');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 pt-10 pb-16 relative overflow-hidden flex flex-col justify-between">
-      {/* Animated Flowy Background Gradients */}
-      <motion.div 
-        className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-gradient-to-tr from-blue-100/40 via-sky-100/30 to-transparent rounded-full blur-3xl pointer-events-none"
-        animate={{
-          x: [0, 30, -20, 0],
-          y: [0, -40, 20, 0],
-          scale: [1, 1.1, 0.9, 1],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      <motion.div 
-        className="absolute bottom-[5%] left-[-10%] w-[600px] h-[600px] bg-gradient-to-br from-indigo-100/30 via-violet-50/25 to-transparent rounded-full blur-3xl pointer-events-none"
-        animate={{
-          x: [0, -45, 25, 0],
-          y: [0, 30, -30, 0],
-          scale: [1, 0.95, 1.05, 1],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
+    <div className="min-h-screen bg-white text-slate-900 flex font-sans overflow-hidden">
+      
+      {/* LEFT CONTAINER COL (52% width): Only visible on Large Screens (lg:flex) */}
+      <div className="hidden lg:flex lg:w-[50%] p-6 flex-col justify-between relative shrink-0">
+        <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[#a3b3c9] via-[#b2c4dc] to-[#cfddee] p-10 flex flex-col justify-between relative overflow-hidden border border-slate-100 shadow-[0_10px_40px_rgba(148,163,184,0.12)]">
+          {/* Subtle Abstract Light Orbs behind the card for atmosphere */}
+          <div className="absolute top-[-20%] right-[-10%] w-[350px] h-[350px] bg-white/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-[10%] left-[-10%] w-[400px] h-[400px] bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10 flex-grow flex flex-col justify-center">
-        
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="login-form-card"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ type: "spring", stiffness: 300, damping: 28 }}
-            className="max-w-md w-full mx-auto"
-          >
-            {/* Backlink Logo at the Top */}
-            <div className="flex flex-col items-center justify-center mb-6">
-              <motion.button
-                type="button"
-                onClick={onNavigateHome}
-                className="p-3.5 bg-white/80 hover:bg-white border border-slate-200/60 rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition-all duration-300 flex items-center justify-center"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                title="Kembali ke Beranda Utama"
-              >
-                <Logo />
-              </motion.button>
+          {/* Top Logo Section */}
+          <div className="flex items-center gap-2 z-10">
+            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-md shadow-slate-350/20 shrink-0">
+              <svg className="w-5.5 h-5.5 text-[#5e779b] fill-current" viewBox="0 0 24 24">
+                <path d="M12 2L2 14h9l-1.2 8L22 10h-9l1.2-8z" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
+            <span className="text-lg font-bold tracking-tight text-white font-sans drop-shadow-xs">HSR Nexus</span>
+          </div>
 
-            {/* Clean White Card Form Wrapper */}
-            <div id="login_card" className="bg-white/95 backdrop-blur-md border border-slate-200/80 rounded-2xl p-8 shadow-xl relative text-left">
+          {/* Middle Body Copy */}
+          <div className="my-auto pt-6 pb-4 max-w-xl text-left z-10">
+            <h1 className="text-3xl xl:text-4xl font-display font-medium text-white tracking-tight leading-[1.2] mb-3 [text-wrap:balance]">
+              Keep your Tasks, Clients and all your services on track!
+            </h1>
+            <p className="text-white/90 text-sm leading-relaxed font-normal max-w-md mb-8">
+              Quite simply, real-time tracking to help technicians see diagnostic reports and all meaningful data that we might not otherwise detect.
+            </p>
+
+            {/* Pagination Segment Lines */}
+            <div className="flex items-center gap-1.5 select-none">
+              <div className="bg-white h-[4px] w-5 rounded-full transition-all" />
+              <div className="bg-white/40 h-[4px] w-12 rounded-full transition-all" />
+              <div className="bg-white/40 h-[4px] w-20 rounded-full transition-all" />
+            </div>
+          </div>
+
+          {/* Bottom Floating Interactive CSS Mock Dashboard */}
+          <div className="w-full z-10 pt-4 overflow-hidden">
+            <div className="bg-white/95 backdrop-blur-xs rounded-2xl shadow-[0_24px_50px_rgba(51,65,85,0.08)] border border-white/60 flex flex-row h-[280px] w-full relative transition-all duration-350 hover:translate-y-[-4px] select-none text-slate-800 text-left">
               
-              {/* Brand Header */}
-              <div className="text-center mb-6">
-                <div className="flex items-center justify-center gap-1.5 mb-1 bg-blue-50/50 py-1 px-3 rounded-full w-fit mx-auto border border-blue-100/40">
-                  <IconShieldCheck className="w-4 h-4 text-brand-blue" />
-                  <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest">HSR Portal</span>
+              {/* Mini Sidebar of Mockup */}
+              <div className="w-[145px] bg-[#f8fafc] border-r border-slate-100 p-4 flex flex-col justify-between shrink-0 rounded-l-2xl">
+                <div className="space-y-4">
+                  {/* Brand mark */}
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-5 h-5 rounded-md bg-blue-600 flex items-center justify-center">
+                      <svg className="w-3 h-3 text-white fill-current" viewBox="0 0 24 24">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                      </svg>
+                    </div>
+                    <span className="text-[9.5px] font-black text-slate-900 tracking-tight">HSR Nexus</span>
+                  </div>
+                  
+                  {/* Menu list */}
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5 px-2 py-1 bg-blue-50 text-blue-700 rounded-md text-[9.5px] font-extrabold shadow-2xs">
+                      <svg className="w-3 h-3 text-blue-600 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="7" height="9" rx="1" />
+                        <rect x="14" y="3" width="7" height="5" rx="1" />
+                        <rect x="14" y="12" width="7" height="9" rx="1" />
+                        <rect x="3" y="16" width="7" height="5" rx="1" />
+                      </svg>
+                      Dashboard
+                    </div>
+
+                    <div className="flex items-center justify-between px-2 py-1 text-slate-500 hover:text-slate-900 text-[9.5px] font-bold leading-none cursor-pointer">
+                      <span className="flex items-center gap-1.5">
+                        <svg className="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                        </svg>
+                        Applications
+                      </span>
+                      <svg className="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    <div className="pl-5 text-[8.5px] text-slate-400 font-bold">Shopify</div>
+                    <div className="pl-5 text-[8.5px] text-slate-400 font-bold">Amazon</div>
+                    
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-slate-500 text-[9.5px] font-bold">
+                      <svg className="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      Analytics
+                    </div>
+                    <div className="flex items-center gap-1.5 px-2 py-1 text-slate-500 text-[9.5px] font-bold">
+                      <svg className="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                      Users
+                    </div>
+                  </div>
                 </div>
-                <h2 className="text-2xl font-sans font-extrabold tracking-tight text-slate-900 mt-3">
-                  Masuk Portal Internal
-                </h2>
-                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed font-normal">
-                  Silakan masuk untuk mengakses dasbor admin dan pemantauan pekerjaan teknisi dengan layout multi-pane.
-                </p>
+                
+                <div className="text-[7.5px] font-mono font-bold text-slate-400 tracking-wider">ENTERPRISE CLOUD</div>
+              </div>
+              
+              {/* Main Mini Panel Body */}
+              <div className="flex-1 bg-white p-4 flex flex-col justify-between rounded-r-2xl overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-[11px] font-extrabold text-slate-900 leading-none">Dashboard</h4>
+                    <span className="text-[8px] text-slate-400 mt-0.5 block">HSR performance logs</span>
+                  </div>
+                  <div className="w-5 h-5 rounded-full bg-blue-50 text-blue-700 font-bold text-[8px] flex items-center justify-center font-mono">
+                    HS
+                  </div>
+                </div>
+                
+                {/* Statistics Row layout */}
+                <div className="grid grid-cols-3 gap-1.5 my-3">
+                  <div className="border border-slate-100 bg-slate-50/40 p-2 rounded-xl">
+                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Total Revenue</span>
+                    <span className="text-xs font-black text-slate-950 mt-0.5 block leading-none">$43,843</span>
+                    <span className="inline-block px-1 py-0.5 rounded-sm bg-emerald-50 text-emerald-600 text-[6.5px] font-bold mt-1 leading-none">+13%</span>
+                  </div>
+                  <div className="border border-slate-100 bg-slate-50/40 p-2 rounded-xl">
+                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Subscribers</span>
+                    <span className="text-xs font-black text-slate-950 mt-0.5 block leading-none">10,021</span>
+                    <span className="inline-block px-1 py-0.5 rounded-sm bg-emerald-50 text-emerald-600 text-[6.5px] font-bold mt-1 leading-none">+24%</span>
+                  </div>
+                  <div className="border border-[#fee2e2]/35 bg-slate-50/40 p-2 rounded-xl">
+                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Clicks</span>
+                    <span className="text-xs font-black text-slate-950 mt-0.5 block leading-none">67,284</span>
+                    <span className="inline-block px-1 py-0.5 rounded-sm bg-rose-50 text-rose-600 text-[6.5px] font-bold mt-1 leading-none">-11%</span>
+                  </div>
+                </div>
+                
+                {/* Bottom area Chart */}
+                <div className="pt-2 border-t border-slate-100 flex-1 flex flex-col justify-between">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[8px] font-extrabold text-slate-900 block leading-none">Total Revenue</span>
+                      <span className="text-[6.5px] text-slate-400 block mt-0.5">Mattis vitae curabitur ultrices tincidunt</span>
+                    </div>
+                    <div className="text-[7px] font-bold text-slate-400">Y-Axis (k)</div>
+                  </div>
+                  
+                  {/* Gorgeous glowing wave chart using smooth SVG vectors */}
+                  <div className="h-[55px] w-full relative mt-1.5 flex items-end">
+                    <svg className="w-full h-full overflow-visible" viewBox="0 0 200 40" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="glow-wave" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
+                          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <path 
+                        d="M 0 40 Q 15 28 30 33 T 60 18 T 90 28 T 120 15 T 150 25 T 180 12 L 200 8 L 200 40 Z" 
+                        fill="url(#glow-wave)" 
+                      />
+                      <path 
+                        d="M 0 40 Q 15 28 30 33 T 60 18 T 90 28 T 120 15 T 150 25 T 180 12 Q 190 8 200 8" 
+                        fill="none" 
+                        stroke="#3b82f6" 
+                        strokeWidth="1.75" 
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
               </div>
 
-              <form onSubmit={handleFormLogin} className="space-y-4">
-                
-                {errorMsg && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-rose-50 border border-rose-100 text-rose-600 p-3 rounded-lg text-xs flex items-start gap-2"
-                  >
-                    <IconAlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-500" />
-                    <span>{errorMsg}</span>
-                  </motion.div>
-                )}
+            </div>
+          </div>
 
-                {/* Email Input */}
-                <div>
-                  <label htmlFor="email-input" className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                    Email Pengguna
-                  </label>
-                  <div className="relative">
-                    <IconMail className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      id="email-input"
-                      type="text"
-                      required
-                      placeholder="contoh: admin@hsr.com atau admin"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-slate-50 border border-slate-250 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-brand-blue placeholder-slate-400 transition-colors"
-                    />
-                  </div>
-                </div>
+        </div>
+      </div>
 
-                {/* Password Input */}
-                <div>
-                  <label htmlFor="password-input" className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-                    Kata Sandi
-                  </label>
-                  <div className="relative">
-                    <IconLock className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input
-                      id="password-input"
-                      type="password"
-                      required
-                      placeholder="Masukkan password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 text-xs rounded-lg bg-slate-50 border border-slate-250 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/10 focus:border-brand-blue placeholder-slate-400 transition-colors"
-                    />
-                  </div>
-                </div>
+      {/* RIGHT CONTAINER COL: Form area (48% width) */}
+      <div className="w-full lg:w-[50%] flex flex-col justify-between px-6 py-10 md:px-12 lg:px-16 xl:px-24 bg-white relative">
+        
+        {/* Back Link to Public Web */}
+        <div className="flex items-center justify-between">
+          <button 
+            type="button"
+            onClick={onNavigateHome}
+            className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-slate-300 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer shadow-2xs"
+          >
+            ← Kembali ke Beranda
+          </button>
+          
+          <div className="text-right text-[10px] font-mono font-bold text-slate-400">
+            HSR SECURITY ENGINE
+          </div>
+        </div>
 
-                {/* Sign In Button */}
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-1.5 bg-brand-blue hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg text-xs transition-colors cursor-pointer shadow-sm disabled:opacity-50"
-                >
-                  {isLoading ? (
-                    <>
-                      <IconRefresh className="w-3.5 h-3.5 animate-spin" />
-                      <span>Mengotentikasi Sesi...</span>
-                    </>
-                  ) : (
-                    <>
-                      <IconLogin className="w-3.5 h-3.5" />
-                      <span>Masuk Sesi Internal</span>
-                    </>
-                  )}
-                </button>
+        {/* Central Registration Panel */}
+        <div className="my-auto max-w-md w-full mx-auto py-8">
+          
+          {/* Header block */}
+          <div className="text-left mb-8">
+            <h2 className="text-3xl font-display font-medium text-[#101828] tracking-tight leading-none mb-2.5">
+              Create an account
+            </h2>
+            <p className="text-sm font-normal text-[#667085] leading-relaxed">
+              Let's get started with your 30 day trial.
+            </p>
+          </div>
 
-                {/* Divider */}
-                <div className="relative my-4 flex items-center justify-center">
-                  <div className="border-t border-slate-200 w-full" />
-                  <span className="absolute bg-white px-2.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    Atau
-                  </span>
-                </div>
+          {/* Form container */}
+          <form onSubmit={handleFormLogin} className="space-y-5 text-left">
+            
+            {/* Error notifications */}
+            {errorMsg && (
+              <motion.div 
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-rose-50 border border-rose-150 text-rose-700 p-3 rounded-lg text-xs font-medium flex items-start gap-2 shadow-2xs"
+              >
+                <IconAlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
+                <span>{errorMsg}</span>
+              </motion.div>
+            )}
 
-                {/* Google Login Option */}
-                <motion.button
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-250 font-bold py-2.5 px-4 rounded-lg text-xs transition-colors cursor-pointer shadow-sm"
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.99 }}
-                >
-                  <span className="flex items-center justify-center w-4 h-4 shrink-0 font-display font-black text-blue-600 text-[13px] border border-slate-150 rounded-full bg-slate-50">G</span>
-                  <span>Masuk dengan Google</span>
-                </motion.button>
-
-              </form>
-
+            {/* Field 1: Name */}
+            <div>
+              <label htmlFor="name-input" className="block text-xs font-semibold text-[#344054] mb-1.5">
+                Name<span className="text-[#1570ef] ml-0.5">*</span>
+              </label>
+              <input
+                id="name-input"
+                type="text"
+                placeholder="Enter your name"
+                required
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="w-full border border-[#D0D5DD] px-3.5 py-2 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-[#1570ef] shadow-2xs transition-all bg-white"
+              />
             </div>
 
-          </motion.div>
-        </AnimatePresence>
+            {/* Field 2: Email */}
+            <div>
+              <label htmlFor="email-input" className="block text-xs font-semibold text-[#344054] mb-1.5">
+                Email<span className="text-[#1570ef] ml-0.5">*</span>
+              </label>
+              <input
+                id="email-input"
+                type="text"
+                placeholder="Enter your email"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full border border-[#D0D5DD] px-3.5 py-2 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-[#1570ef] shadow-2xs transition-all bg-white"
+              />
+            </div>
+
+            {/* Field 3: Password */}
+            <div>
+              <label htmlFor="password-input" className="block text-xs font-semibold text-[#344054] mb-1.5">
+                Password<span className="text-[#1570ef] ml-0.5">*</span>
+              </label>
+              <input
+                id="password-input"
+                type="password"
+                placeholder="Create a password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-[#D0D5DD] px-3.5 py-2 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-[#1570ef] shadow-2xs transition-all bg-white"
+              />
+              <p className="text-[11px] text-[#475467] font-normal mt-1.5 leading-normal">
+                Must be at least 8 characters.
+              </p>
+            </div>
+
+            {/* Register Action Button */}
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-[#1570EF] hover:bg-[#175CD3] active:bg-[#155EEF] text-white font-semibold py-2.5 px-4 rounded-lg text-xs shadow-sm hover:shadow-md transition-all duration-200 text-center flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none mt-6"
+            >
+              {isLoading ? (
+                <>
+                  <IconRefresh className="w-3.5 h-3.5 animate-spin" />
+                  <span>Creating account...</span>
+                </>
+              ) : (
+                <span>Create account</span>
+              )}
+            </button>
+
+            {/* Google Sign In Option */}
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#F9FAFB] text-[#344054] border border-[#D0D5DD] font-semibold py-2.5 px-4 rounded-lg text-xs shadow-3xs hover:shadow-2xs transition-all cursor-pointer select-none"
+            >
+              <svg className="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.859-3.578-7.859-8s3.53-8 7.859-8c2.46 0 4.105 1.025 5.047 1.926l3.245-3.123C18.25 1.91 15.45 1 12.24 1 5.485 1 0 6.485 0 13.24s5.485 12.24 12.24 12.24c6.1 0 11.144-4.29 11.144-11.24 0-.756-.08-1.332-.18-1.956H12.24z"/>
+              </svg>
+              <span>Sign in with Google</span>
+            </button>
+
+          </form>
+
+          {/* Quick Admin/Technician demo pre-fills underneath the form */}
+          <div className="mt-8 pt-6 border-t border-slate-100 text-left">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-3">
+              OTOMATIS MASUK (AKUN SIMULASI DEMO):
+            </span>
+            <div className="flex flex-wrap gap-2.5">
+              <button
+                type="button"
+                onClick={() => fillDemo('admin')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-100 bg-indigo-50/50 hover:bg-indigo-50 text-[11px] font-bold text-indigo-700 transition-colors cursor-pointer"
+              >
+                🔮 Isikan Demo Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => fillDemo('teknisi')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-100 bg-amber-50/50 hover:bg-amber-50 text-[11px] font-bold text-amber-700 transition-colors cursor-pointer"
+              >
+                🛠️ Isikan Demo Teknisi
+              </button>
+            </div>
+            <p className="text-[10px] text-slate-400 mt-2 leading-relaxed">
+              *Klik salah satu akun demo di atas untuk mengisi formulir secara instan, lalu klik <strong className="text-slate-500 font-bold">Create account</strong> untuk masuk!
+            </p>
+          </div>
+
+        </div>
+
+        {/* Footer info containing privacy/terms action */}
+        <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-slate-100 text-[11px] text-slate-400 leading-normal gap-3 mt-4">
+          <span>&copy; 2026 HSR Technology • Indonesia Internal Portal Service</span>
+          <div className="flex items-center gap-3 font-semibold text-[#475467]">
+            <button 
+              type="button"
+              onClick={openTerms} 
+              className="hover:text-blue-600 transition-colors cursor-pointer"
+            >
+              Syarat Ketentuan
+            </button>
+            <span>&bull;</span>
+            <button 
+              type="button"
+              onClick={openPrivacy} 
+              className="hover:text-blue-600 transition-colors cursor-pointer"
+            >
+              Kebijakan Privasi
+            </button>
+          </div>
+        </div>
 
       </div>
-      
-      {/* Light Clean Footer Bar */}
-      <footer className="text-center text-slate-400 text-[10px] font-mono uppercase tracking-wider select-none pt-8 border-t border-slate-200/60 relative z-10 mt-8 space-y-2.5 pb-6">
-        <div>© 2026 HSR Technology • Indonesia Internal Portal Service</div>
-        <div className="flex items-center justify-center gap-4 text-slate-500 font-sans tracking-normal normal-case font-bold">
-          <button 
-            type="button"
-            onClick={openTerms} 
-            className="hover:text-blue-600 transition-colors cursor-pointer focus:outline-none text-[11px]"
-          >
-            Syarat Ketentuan
-          </button>
-          <span className="text-slate-200">•</span>
-          <button 
-            type="button"
-            onClick={openPrivacy} 
-            className="hover:text-blue-600 transition-colors cursor-pointer focus:outline-none text-[11px]"
-          >
-            Kebijakan Privasi
-          </button>
-        </div>
-      </footer>
 
     </div>
   );

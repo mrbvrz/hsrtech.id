@@ -82,56 +82,10 @@ function RootComponent() {
     };
   }, []);
 
-  // Initialize Locomotive Scroll for smooth scrolling
+  // Reset scroll to top on path changes
   useEffect(() => {
-    let locomotiveScrollInstance: any;
-
-    const initScroll = async () => {
-      try {
-        const LocomotiveScrollModule = await import('locomotive-scroll');
-        const LocomotiveScroll = LocomotiveScrollModule.default;
-
-        document.documentElement.style.scrollBehavior = 'auto';
-
-        locomotiveScrollInstance = new LocomotiveScroll({
-          lenisOptions: {
-            smoothWheel: true,
-            duration: 1.2,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            touchMultiplier: 1.5,
-          },
-          scrollCallback: (args: any) => {
-            const scrollY = args.scroll || 0;
-            setIsAtTop(scrollY < 60);
-            setIsScrolled(scrollY > 20);
-          }
-        });
-
-        const resizeTimeout = setTimeout(() => {
-          if (locomotiveScrollInstance) {
-            window.dispatchEvent(new Event('resize'));
-          }
-        }, 150);
-
-        return () => clearTimeout(resizeTimeout);
-      } catch (error) {
-        console.error('Failed to initialize Locomotive Scroll:', error);
-      }
-    };
-
-    initScroll();
-
-    return () => {
-      if (locomotiveScrollInstance) {
-        try {
-          locomotiveScrollInstance.destroy();
-        } catch (err) {
-          console.warn('Error destroying Locomotive Scroll:', err);
-        }
-      }
-      document.documentElement.style.scrollBehavior = 'smooth';
-    };
-  }, [currentPath]); // Re-init scroll boundaries on route transition
+    window.scrollTo(0, 0);
+  }, [currentPath]);
 
   // Restore logged in user role from localStorage
   useEffect(() => {
@@ -279,10 +233,10 @@ function RootComponent() {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPath}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
             >
               <RouteContext.Provider value={{ userRole, setUserRole, handleLogout, handleNavigate }}>
                 <Outlet />
