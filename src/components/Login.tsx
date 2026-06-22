@@ -10,12 +10,13 @@ import {
   IconCheck, IconSearch, IconBuilding, IconShieldCheck, IconAlertCircle, IconRefresh, 
   IconSettings, IconActivity, IconFileText, IconCircleCheck, IconClock, IconCircleX, IconPlus, 
   IconArrowLeft, IconKey, IconMail, IconPhone, IconUsers, IconTool, IconChevronRight, IconChevronDown, 
-  IconBell, IconHelpCircle, IconDots, IconBriefcase, IconMenu2
+  IconBell, IconHelpCircle, IconDots, IconBriefcase, IconMenu2, IconEye, IconEyeOff
 } from '@tabler/icons-react';
 import { SERVICES } from '../data';
 import { Reservation as ReservationType } from '../types';
 import Logo from './Logo';
 import { useLegalDrawer } from '../context/LegalDrawerContext';
+import logoImg from '../assets/logo.png';
 
 interface LoginProps {
   onLoginSuccess: (role: 'admin' | 'teknisi') => void;
@@ -27,9 +28,9 @@ interface LoginProps {
 export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogout }: LoginProps) {
   const { openTerms, openPrivacy } = useLegalDrawer();
   // Login Panel State
-  const [displayName, setDisplayName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -1300,19 +1301,7 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
     );
   }
 
-  // ELSE: RETURN THE VISUALLY POLISHED SPLIT SCREEN LOGIN/REGISTER
-  const fillDemo = (role: 'admin' | 'teknisi') => {
-    if (role === 'admin') {
-      setDisplayName('Hasan Suryaman');
-      setUsername('admin@hsr.com');
-      setPassword('admin');
-    } else {
-      setDisplayName('John Marpaung');
-      setUsername('teknisi@hsr.com');
-      setPassword('teknisi');
-    }
-  };
-
+  // ELSE: RETURN THE VISUALLY POLISHED SPLIT SCREEN SIGN-IN
   return (
     <div className="min-h-screen bg-white text-slate-900 flex font-sans overflow-hidden">
       
@@ -1323,23 +1312,13 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
           <div className="absolute top-[-20%] right-[-10%] w-[350px] h-[350px] bg-white/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-[10%] left-[-10%] w-[400px] h-[400px] bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-          {/* Top Logo Section */}
-          <div className="flex items-center gap-2 z-10">
-            <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-md shadow-slate-350/20 shrink-0">
-              <svg className="w-5.5 h-5.5 text-[#5e779b] fill-current" viewBox="0 0 24 24">
-                <path d="M12 2L2 14h9l-1.2 8L22 10h-9l1.2-8z" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <span className="text-lg font-bold tracking-tight text-white font-sans drop-shadow-xs">HSR Nexus</span>
-          </div>
-
           {/* Middle Body Copy */}
           <div className="my-auto pt-6 pb-4 max-w-xl text-left z-10">
             <h1 className="text-3xl xl:text-4xl font-display font-medium text-white tracking-tight leading-[1.2] mb-3 [text-wrap:balance]">
-              Keep your Tasks, Clients and all your services on track!
+              Pantau terus semua Tugas, Klien, dan Layanan Anda!
             </h1>
             <p className="text-white/90 text-sm leading-relaxed font-normal max-w-md mb-8">
-              Quite simply, real-time tracking to help technicians see diagnostic reports and all meaningful data that we might not otherwise detect.
+              Sistem pelacakan waktu nyata (real-time) untuk memudahkan teknisi memantau laporan diagnostik dan seluruh data penting secara akurat.
             </p>
 
             {/* Pagination Segment Lines */}
@@ -1376,7 +1355,7 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                         <rect x="14" y="12" width="7" height="9" rx="1" />
                         <rect x="3" y="16" width="7" height="5" rx="1" />
                       </svg>
-                      Dashboard
+                      Dasbor
                     </div>
 
                     <div className="flex items-center justify-between px-2 py-1 text-slate-500 hover:text-slate-900 text-[9.5px] font-bold leading-none cursor-pointer">
@@ -1384,7 +1363,7 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                         <svg className="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                           <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                         </svg>
-                        Applications
+                        Daftar Aplikasi
                       </span>
                       <svg className="w-2.5 h-2.5 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M19 9l-7 7-7-7" />
@@ -1397,26 +1376,26 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                       <svg className="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      Analytics
+                      Analitik
                     </div>
                     <div className="flex items-center gap-1.5 px-2 py-1 text-slate-500 text-[9.5px] font-bold">
                       <svg className="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                         <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
-                      Users
+                      Pengguna
                     </div>
                   </div>
                 </div>
                 
-                <div className="text-[7.5px] font-mono font-bold text-slate-400 tracking-wider">ENTERPRISE CLOUD</div>
+                <div className="text-[7.5px] font-mono font-bold text-slate-400 tracking-wider">CLOUD PERUSAHAAN</div>
               </div>
               
               {/* Main Mini Panel Body */}
               <div className="flex-1 bg-white p-4 flex flex-col justify-between rounded-r-2xl overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-[11px] font-extrabold text-slate-900 leading-none">Dashboard</h4>
-                    <span className="text-[8px] text-slate-400 mt-0.5 block">HSR performance logs</span>
+                    <h4 className="text-[11px] font-extrabold text-slate-900 leading-none">Dasbor Utama</h4>
+                    <span className="text-[8px] text-slate-400 mt-0.5 block">Log aktivitas performa HSR</span>
                   </div>
                   <div className="w-5 h-5 rounded-full bg-blue-50 text-blue-700 font-bold text-[8px] flex items-center justify-center font-mono">
                     HS
@@ -1426,17 +1405,17 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                 {/* Statistics Row layout */}
                 <div className="grid grid-cols-3 gap-1.5 my-3">
                   <div className="border border-slate-100 bg-slate-50/40 p-2 rounded-xl">
-                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Total Revenue</span>
+                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Total Pendapatan</span>
                     <span className="text-xs font-black text-slate-950 mt-0.5 block leading-none">$43,843</span>
                     <span className="inline-block px-1 py-0.5 rounded-sm bg-emerald-50 text-emerald-600 text-[6.5px] font-bold mt-1 leading-none">+13%</span>
                   </div>
                   <div className="border border-slate-100 bg-slate-50/40 p-2 rounded-xl">
-                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Subscribers</span>
+                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Pelanggan</span>
                     <span className="text-xs font-black text-slate-950 mt-0.5 block leading-none">10,021</span>
                     <span className="inline-block px-1 py-0.5 rounded-sm bg-emerald-50 text-emerald-600 text-[6.5px] font-bold mt-1 leading-none">+24%</span>
                   </div>
                   <div className="border border-[#fee2e2]/35 bg-slate-50/40 p-2 rounded-xl">
-                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Clicks</span>
+                    <span className="text-[7px] text-slate-400 block font-bold uppercase tracking-wider">Jumlah Klik</span>
                     <span className="text-xs font-black text-slate-950 mt-0.5 block leading-none">67,284</span>
                     <span className="inline-block px-1 py-0.5 rounded-sm bg-rose-50 text-rose-600 text-[6.5px] font-bold mt-1 leading-none">-11%</span>
                   </div>
@@ -1446,10 +1425,10 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                 <div className="pt-2 border-t border-slate-100 flex-1 flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[8px] font-extrabold text-slate-900 block leading-none">Total Revenue</span>
-                      <span className="text-[6.5px] text-slate-400 block mt-0.5">Mattis vitae curabitur ultrices tincidunt</span>
+                      <span className="text-[8px] font-extrabold text-slate-900 block leading-none">Diagram Pendapatan</span>
+                      <span className="text-[6.5px] text-slate-400 block mt-0.5">Statistik pendapatan aktual berjalan bulan ini</span>
                     </div>
-                    <div className="text-[7px] font-bold text-slate-400">Y-Axis (k)</div>
+                    <div className="text-[7px] font-bold text-slate-400">Sumbu Y (K)</div>
                   </div>
                   
                   {/* Gorgeous glowing wave chart using smooth SVG vectors */}
@@ -1487,32 +1466,49 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
       {/* RIGHT CONTAINER COL: Form area (48% width) */}
       <div className="w-full lg:w-[50%] flex flex-col justify-between px-6 py-10 md:px-12 lg:px-16 xl:px-24 bg-white relative">
         
-        {/* Back Link to Public Web */}
-        <div className="flex items-center justify-between">
-          <button 
-            type="button"
-            onClick={onNavigateHome}
-            className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-slate-300 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-all cursor-pointer shadow-2xs"
-          >
-            ← Kembali ke Beranda
-          </button>
-          
-          <div className="text-right text-[10px] font-mono font-bold text-slate-400">
-            HSR SECURITY ENGINE
-          </div>
-        </div>
-
         {/* Central Registration Panel */}
-        <div className="my-auto max-w-md w-full mx-auto py-8">
+        <div className="my-auto max-w-sm w-full mx-auto py-8">
           
+          {/* Logo brand */}
+          <div className="flex justify-start mb-8">
+            <img 
+              src={logoImg} 
+              alt="HSR Logo" 
+              className="h-16 w-auto object-contain" 
+              referrerPolicy="no-referrer" 
+            />
+          </div>
+
           {/* Header block */}
           <div className="text-left mb-8">
-            <h2 className="text-3xl font-display font-medium text-[#101828] tracking-tight leading-none mb-2.5">
-              Create an account
+            <h2 className="text-2xl font-display font-bold text-[#101828] tracking-tight leading-none mb-2.5">
+              Masuk ke akun Anda
             </h2>
             <p className="text-sm font-normal text-[#667085] leading-relaxed">
-              Let's get started with your 30 day trial.
+              Selamat datang kembali! Silakan masukkan data akun Anda.
             </p>
+          </div>
+
+          {/* Tombol login dengan Google di bagian atas */}
+          <div className="mb-5 space-y-4">
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#F9FAFB] text-[#344054] border border-[#D0D5DD] font-semibold py-2.5 px-4 rounded-lg text-xs shadow-xs hover:shadow-2xs transition-all cursor-pointer select-none font-sans"
+            >
+              <svg className="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.859-3.578-7.859-8s3.53-8 7.859-8c2.46 0 4.105 1.025 5.047 1.926l3.245-3.123C18.25 1.91 15.45 1 12.24 1 5.485 1 0 6.485 0 13.24s5.485 12.24 12.24 12.24c6.1 0 11.144-4.29 11.144-11.24 0-.756-.08-1.332-.18-1.956H12.24z"/>
+              </svg>
+              <span>Masuk dengan Google</span>
+            </button>
+
+            {/* Pembatas 'atau' */}
+            <div className="relative flex items-center justify-center py-2">
+              <div className="border-t border-slate-200 w-full" />
+              <span className="absolute bg-white px-3.5 text-xs font-semibold text-slate-400">
+                atau
+              </span>
+            </div>
           </div>
 
           {/* Form container */}
@@ -1523,125 +1519,91 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
               <motion.div 
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-rose-50 border border-rose-150 text-rose-700 p-3 rounded-lg text-xs font-medium flex items-start gap-2 shadow-2xs"
+                className="bg-rose-50 border border-rose-150 text-rose-750 p-3 rounded-lg text-xs font-medium flex items-start gap-2 shadow-sm"
               >
                 <IconAlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
                 <span>{errorMsg}</span>
               </motion.div>
             )}
 
-            {/* Field 1: Name */}
-            <div>
-              <label htmlFor="name-input" className="block text-xs font-semibold text-[#344054] mb-1.5">
-                Name<span className="text-[#1570ef] ml-0.5">*</span>
-              </label>
-              <input
-                id="name-input"
-                type="text"
-                placeholder="Enter your name"
-                required
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full border border-[#D0D5DD] px-3.5 py-2 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-[#1570ef] shadow-2xs transition-all bg-white"
-              />
-            </div>
-
-            {/* Field 2: Email */}
+            {/* Field 1: Email / Username */}
             <div>
               <label htmlFor="email-input" className="block text-xs font-semibold text-[#344054] mb-1.5">
-                Email<span className="text-[#1570ef] ml-0.5">*</span>
+                Email / Username<span className="text-[#1570ef] ml-0.5">*</span>
               </label>
               <input
                 id="email-input"
                 type="text"
-                placeholder="Enter your email"
+                placeholder="Masukkan email atau username contoh: admin@hsr.com"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full border border-[#D0D5DD] px-3.5 py-2 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-[#1570ef] shadow-2xs transition-all bg-white"
+                className="w-full border border-[#D0D5DD] px-3.5 py-2.5 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-4 focus:ring-blue-50/50 focus:border-[#1570ef] shadow-xs transition-all bg-white font-sans"
               />
             </div>
 
-            {/* Field 3: Password */}
+            {/* Field 2: Password with Show/Hide Toggle */}
             <div>
-              <label htmlFor="password-input" className="block text-xs font-semibold text-[#344054] mb-1.5">
-                Password<span className="text-[#1570ef] ml-0.5">*</span>
-              </label>
-              <input
-                id="password-input"
-                type="password"
-                placeholder="Create a password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-[#D0D5DD] px-3.5 py-2 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-3 focus:ring-blue-100 focus:border-[#1570ef] shadow-2xs transition-all bg-white"
-              />
-              <p className="text-[11px] text-[#475467] font-normal mt-1.5 leading-normal">
-                Must be at least 8 characters.
-              </p>
+              <div className="flex justify-between items-center mb-1.5">
+                <label htmlFor="password-input" className="block text-xs font-semibold text-[#344054]">
+                  Kata Sandi<span className="text-[#1570ef] ml-0.5">*</span>
+                </label>
+                <span className="text-xs text-[#1570ef] hover:text-[#175cd3] font-semibold cursor-pointer select-none">
+                  Lupa kata sandi?
+                </span>
+              </div>
+              
+              <div className="relative">
+                <input
+                  id="password-input"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Masukkan kata sandi Anda"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full border border-[#D0D5DD] pl-3.5 pr-10 py-2.5 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-4 focus:ring-blue-50/50 focus:border-[#1570ef] shadow-xs transition-all bg-white font-sans"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#667085] hover:text-slate-800 transition-colors focus:outline-none cursor-pointer"
+                  title={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
+                >
+                  {showPassword ? (
+                    <IconEyeOff className="w-4 h-4 shrink-0" />
+                  ) : (
+                    <IconEye className="w-4 h-4 shrink-0" />
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Register Action Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#1570EF] hover:bg-[#175CD3] active:bg-[#155EEF] text-white font-semibold py-2.5 px-4 rounded-lg text-xs shadow-sm hover:shadow-md transition-all duration-200 text-center flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none mt-6"
+              className="w-full bg-[#1570EF] hover:bg-[#175CD3] active:bg-[#155EEF] text-white font-semibold py-2.5 px-4 rounded-lg text-xs shadow-sm hover:shadow-md transition-all duration-200 text-center flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none mt-6 font-sans"
             >
               {isLoading ? (
                 <>
                   <IconRefresh className="w-3.5 h-3.5 animate-spin" />
-                  <span>Creating account...</span>
+                  <span>Memproses masuk...</span>
                 </>
               ) : (
-                <span>Create account</span>
+                <>
+                  <IconLogin className="w-4 h-4 shrink-0" />
+                  <span>Masuk Ke Sesi</span>
+                </>
               )}
             </button>
 
-            {/* Google Sign In Option */}
-            <button
-              type="button"
-              onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#F9FAFB] text-[#344054] border border-[#D0D5DD] font-semibold py-2.5 px-4 rounded-lg text-xs shadow-3xs hover:shadow-2xs transition-all cursor-pointer select-none"
-            >
-              <svg className="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24">
-                <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.859-3.578-7.859-8s3.53-8 7.859-8c2.46 0 4.105 1.025 5.047 1.926l3.245-3.123C18.25 1.91 15.45 1 12.24 1 5.485 1 0 6.485 0 13.24s5.485 12.24 12.24 12.24c6.1 0 11.144-4.29 11.144-11.24 0-.756-.08-1.332-.18-1.956H12.24z"/>
-              </svg>
-              <span>Sign in with Google</span>
-            </button>
-
           </form>
-
-          {/* Quick Admin/Technician demo pre-fills underneath the form */}
-          <div className="mt-8 pt-6 border-t border-slate-100 text-left">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-3">
-              OTOMATIS MASUK (AKUN SIMULASI DEMO):
-            </span>
-            <div className="flex flex-wrap gap-2.5">
-              <button
-                type="button"
-                onClick={() => fillDemo('admin')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-indigo-100 bg-indigo-50/50 hover:bg-indigo-50 text-[11px] font-bold text-indigo-700 transition-colors cursor-pointer"
-              >
-                🔮 Isikan Demo Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => fillDemo('teknisi')}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-100 bg-amber-50/50 hover:bg-amber-50 text-[11px] font-bold text-amber-700 transition-colors cursor-pointer"
-              >
-                🛠️ Isikan Demo Teknisi
-              </button>
-            </div>
-            <p className="text-[10px] text-slate-400 mt-2 leading-relaxed">
-              *Klik salah satu akun demo di atas untuk mengisi formulir secara instan, lalu klik <strong className="text-slate-500 font-bold">Create account</strong> untuk masuk!
-            </p>
-          </div>
 
         </div>
 
         {/* Footer info containing privacy/terms action */}
         <div className="flex flex-col sm:flex-row items-center justify-between pt-6 border-t border-slate-100 text-[11px] text-slate-400 leading-normal gap-3 mt-4">
-          <span>&copy; 2026 HSR Technology • Indonesia Internal Portal Service</span>
+          <span>&copy; 2026 HSR Technology • Layanan Portal Internal Indonesia</span>
           <div className="flex items-center gap-3 font-semibold text-[#475467]">
             <button 
               type="button"
