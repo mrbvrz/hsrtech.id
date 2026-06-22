@@ -235,9 +235,12 @@ export default function Hero() {
               {/* Decorative accent background layout (stationary, not affected by hover) */}
               <div className="absolute -top-3 -left-3 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-blue to-cyan-400 z-0 shadow-lg opacity-40 blur-[2px]" />
               <div className="absolute -bottom-3 -right-3 w-16 h-16 rounded-xl bg-gradient-to-br from-brand-dark to-slate-800 z-0 shadow-lg opacity-80 blur-[2px]" />
+              
+              {/* Gorgeous soft colorful ambient backdrop glow strictly for glassmorphic style bleeding */}
+              <div className="absolute inset-4 -right-8 -bottom-10 bg-gradient-to-tr from-blue-300/30 via-indigo-100/20 to-teal-200/30 rounded-3xl opacity-60 blur-3xl pointer-events-none" />
 
               <motion.div 
-                className="w-full bg-slate-950 rounded-3xl border border-slate-800 p-6 shadow-2xl relative transition-colors duration-200 overflow-hidden z-10"
+                className="w-full bg-white/50 backdrop-blur-xl rounded-3xl border border-white/80 p-6 shadow-[0_25px_60px_-15px_rgba(15,23,42,0.06)] relative transition-colors duration-200 overflow-hidden z-10 text-slate-800"
                 style={{
                   transformStyle: "preserve-3d",
                 }}
@@ -248,10 +251,10 @@ export default function Hero() {
                   y: isHovered ? -4 : 0,
                   rotateX: isHovered ? tilt.x : 0,
                   rotateY: isHovered ? tilt.y : 0,
-                  borderColor: isHovered ? "rgba(59, 130, 246, 0.4)" : "rgba(30, 41, 59, 1)",
+                  borderColor: isHovered ? "rgba(59, 130, 246, 0.35)" : "rgba(255, 255, 255, 0.8)",
                   boxShadow: isHovered 
-                    ? "0 20px 40px -12px rgba(59, 130, 246, 0.18), 0 0 20px rgba(59, 130, 246, 0.15)" 
-                    : "0 25px 50px -12px rgba(0, 0, 0, 0.3)"
+                    ? "0 25px 50px -12px rgba(59, 130, 246, 0.1), 0 0 25px rgba(59, 130, 246, 0.05)" 
+                    : "0 25px 60px -15px rgba(15, 23, 42, 0.06)"
                 }}
                 transition={{ type: 'spring', stiffness: 90, damping: 20 }}
               >
@@ -260,12 +263,12 @@ export default function Hero() {
                   className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-300 z-30"
                   style={{
                     opacity: isHovered ? 1 : 0,
-                    background: `radial-gradient(circle 220px at ${glowPos.x}% ${glowPos.y}%, rgba(59, 130, 246, 0.15), transparent 80%)`,
+                    background: `radial-gradient(circle 220px at ${glowPos.x}% ${glowPos.y}%, rgba(59, 130, 246, 0.12), transparent 85%)`,
                   }}
                 />
               
               {/* Header lights */}
-              <div className="flex items-center justify-between mb-4 pb-4 border-b border-slate-800">
+              <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/60">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
                   <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
@@ -276,28 +279,28 @@ export default function Hero() {
                   <span>SISTEM_MONITORING_SERVIS</span>
                 </div>
               </div>
-
+ 
               {/* Repair Progress Tracker Dashboard */}
               <div className="space-y-4">
                 
                 {/* Simulated Order Identity */}
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex items-center justify-between gap-3 font-sans">
+                <div className="bg-white/45 border border-white/60 backdrop-blur-sm rounded-2xl p-4 flex items-center justify-between gap-3 font-sans">
                   <div>
                     <div className="flex items-center gap-1.5 mb-1">
-                      <span className="text-[9px] font-extrabold bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded uppercase tracking-wider">No. Tiket</span>
-                      <span className="text-[10px] font-mono font-bold text-slate-300">#KMP-3094</span>
+                      <span className="text-[9px] font-extrabold bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded uppercase tracking-wider">No. Tiket</span>
+                      <span className="text-[10px] font-mono font-bold text-slate-500">#KMP-3094</span>
                     </div>
-                    <p className="text-xs font-extrabold text-white">Servis Laptop Asus ROG</p>
-                    <p className="text-[9px] text-slate-400 mt-0.5">Keluhan: Layar Kedip & Selalu Overheat</p>
+                    <p className="text-xs font-extrabold text-slate-800">Servis Laptop Asus ROG</p>
+                    <p className="text-[9px] text-slate-500 mt-0.5">Keluhan: Layar Kedip & Selalu Overheat</p>
                   </div>
                   <div className="text-right">
                     <span className="text-[9px] block text-slate-400 font-bold uppercase">Est. Selesai</span>
                     <span className="text-xs font-bold text-brand-blue font-mono font-extrabold">Hari Ini</span>
                   </div>
                 </div>
-
+ 
                 {/* Main Dynamic Status Card with AnimatePresence */}
-                <div className="relative overflow-hidden rounded-2xl border p-4 bg-slate-900/60 border-slate-800 min-h-[110px] flex flex-col justify-between">
+                <div className="relative overflow-hidden rounded-2xl border p-4 bg-white/45 border-white/60 backdrop-blur-sm min-h-[110px] flex flex-col justify-between">
                   <AnimatePresence mode="wait">
                     {currentStatus === 'pengerjaan' ? (
                       <motion.div
@@ -309,17 +312,17 @@ export default function Hero() {
                         className="space-y-2"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/15 text-amber-400 border border-amber-500/20 uppercase tracking-wider animate-pulse">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-50 text-amber-600 border border-amber-100 uppercase tracking-wider animate-pulse">
                             <IconRefresh className="w-3 h-3 animate-spin" />
                             Dalam Pengerjaan
                           </span>
-                          <span className="text-xs font-mono font-bold text-amber-400">75% Selesai</span>
+                          <span className="text-xs font-mono font-bold text-amber-605">75% Selesai</span>
                         </div>
-                        <p className="text-[11px] font-bold text-slate-200">
-                          Teknisi sedang melakukan re-pasting premium thermal paste & penggantian chip regulator daya daya.
+                        <p className="text-[11px] font-bold text-slate-700">
+                          Teknisi sedang melakukan re-pasting premium thermal paste & penggantian chip regulator daya.
                         </p>
                         {/* Pulse progress line */}
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1 relative">
+                        <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mt-1 relative border border-slate-100">
                           <motion.div 
                             className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full"
                             style={{ width: "75%" }}
@@ -338,55 +341,55 @@ export default function Hero() {
                         className="space-y-2"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider">
-                            <IconCircleCheck className="w-3 h-3 text-emerald-400 animate-bounce" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-50 text-emerald-600 border border-emerald-150 uppercase tracking-wider">
+                            <IconCircleCheck className="w-3 h-3 text-emerald-600 animate-bounce" />
                             Selesai Siap Jemput
                           </span>
-                          <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/15">Selesai</span>
+                          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg border border-emerald-100 shadow-sm">Selesai</span>
                         </div>
-                        <p className="text-[11px] font-bold text-slate-200 leading-relaxed">
+                        <p className="text-[11px] font-bold text-slate-700 leading-relaxed">
                           Selesai dapat dilakukan penjemputan! Perangkat lulus uji stabilitas stress-test, suhu dingin optimal.
                         </p>
                         {/* Full progress line */}
-                        <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
-                          <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-450 rounded-full w-full shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                        <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden mt-1 border border-slate-100">
+                          <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-450 rounded-full w-full shadow-[0_0_8px_rgba(16,185,129,0.2)]" />
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-
+ 
                 {/* Steps Visual Progress Vertical Tracker */}
                 <div className="space-y-2.5 pl-1.5 font-sans">
                   
                   {/* Step 1 */}
                   <div className="flex items-start gap-3">
                     <div className="flex flex-col items-center">
-                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white font-extrabold shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white font-extrabold shadow-[0_0_8px_rgba(59,130,246,0.3)]">
                         ✓
                       </div>
                       <div className="w-0.5 h-6 bg-blue-500" />
                     </div>
                     <div>
-                      <h5 className="text-[11px] font-extrabold text-white">1. Registrasi & Diagnosa Awal</h5>
-                      <p className="text-[9px] text-slate-400">Kerusakan terpetakan sistem • Pukul 09:15 WIB</p>
+                      <h5 className="text-[11px] font-extrabold text-slate-800">1. Registrasi & Diagnosa Awal</h5>
+                      <p className="text-[9px] text-slate-500">Kerusakan terpetakan sistem • Pukul 09:15 WIB</p>
                     </div>
                   </div>
-
+ 
                   {/* Step 2 */}
                   <div className="flex items-start gap-3">
                     <div className="flex flex-col items-center">
-                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white font-extrabold shadow-[0_0_8px_rgba(59,130,246,0.5)]">
+                      <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-[10px] text-white font-extrabold shadow-[0_0_8px_rgba(59,130,246,0.3)]">
                         ✓
                       </div>
-                      <div className="w-0.5 h-6 transition-colors duration-500" style={{ backgroundColor: currentStatus === 'selesai' ? '#3b82f6' : '#334155' }} />
+                      <div className="w-0.5 h-6 transition-colors duration-500" style={{ backgroundColor: currentStatus === 'selesai' ? '#3b82f6' : '#cbd5e1' }} />
                     </div>
                     <div>
-                      <h5 className="text-[11px] font-extrabold text-white">2. Persiapan Suku Cadang</h5>
-                      <p className="text-[9px] text-slate-400">IC Regulator daya & Thermal Grizzly siap • Pukul 10:45 WIB</p>
+                      <h5 className="text-[11px] font-extrabold text-slate-800">2. Persiapan Suku Cadang</h5>
+                      <p className="text-[9px] text-slate-500 font-medium">IC Regulator daya & Thermal Grizzly siap • Pukul 10:45 WIB</p>
                     </div>
                   </div>
-
+ 
                   {/* Step 3 */}
                   <div className="flex items-start gap-3">
                     <div className="flex flex-col items-center">
@@ -394,72 +397,73 @@ export default function Hero() {
                         className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-extrabold transition-all duration-500 text-white"
                         style={{ 
                           backgroundColor: currentStatus === 'selesai' ? '#3b82f6' : '#f59e0b',
-                          boxShadow: currentStatus === 'selesai' ? '0 0 8px rgba(59,130,246,0.5)' : '0 0 10px rgba(245,158,11,0.6)'
+                          boxShadow: currentStatus === 'selesai' ? '0 0 8px rgba(59,130,246,0.3)' : '0 0 10px rgba(245,158,11,0.4)'
                         }}
                       >
                         {currentStatus === 'selesai' ? '✓' : '3'}
                       </div>
-                      <div className="w-0.5 h-6 transition-colors duration-500" style={{ backgroundColor: currentStatus === 'selesai' ? '#10b981' : '#334155' }} />
+                      <div className="w-0.5 h-6 transition-colors duration-500" style={{ backgroundColor: currentStatus === 'selesai' ? '#10b981' : '#cbd5e1' }} />
                     </div>
                     <div>
-                      <h5 className="text-[11px] font-extrabold text-white flex items-center gap-1.5">
+                      <h5 className="text-[11px] font-extrabold text-slate-800 flex items-center gap-1.5">
                         <span>3. Tindakan Perbaikan Siber</span>
                         {currentStatus === 'pengerjaan' && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />}
                       </h5>
-                      <p className="text-[9px] text-slate-400">Solder ulang sirkuit pengisi daya & penggantian thermal paste</p>
+                      <p className="text-[9px] text-slate-500 font-medium">Solder ulang sirkuit pengisi daya & penggantian thermal paste</p>
                     </div>
                   </div>
-
+ 
                   {/* Step 4 */}
                   <div className="flex items-start gap-3">
                     <div className="flex flex-col items-center">
                       <div 
                         className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-extrabold transition-all duration-500"
                         style={{ 
-                          backgroundColor: currentStatus === 'selesai' ? '#10b981' : '#1e293b', 
-                          color: currentStatus === 'selesai' ? '#ffffff' : '#64748b',
-                          boxShadow: currentStatus === 'selesai' ? '0 0 12px rgba(16,185,129,0.7)' : 'none'
+                          backgroundColor: currentStatus === 'selesai' ? '#10b981' : '#f1f5f9', 
+                          color: currentStatus === 'selesai' ? '#ffffff' : '#94a3b8',
+                          boxShadow: currentStatus === 'selesai' ? '0 0 12px rgba(16,185,129,0.4)' : 'none',
+                          border: currentStatus === 'selesai' ? 'none' : '1px solid #cbd5e1'
                         }}
                       >
                         {currentStatus === 'selesai' ? '✓' : '4'}
                       </div>
                     </div>
                     <div>
-                      <h5 className={`text-[11px] font-extrabold transition-all duration-500 ${currentStatus === 'selesai' ? 'text-emerald-400' : 'text-slate-500'}`}>
+                      <h5 className={`text-[11px] font-extrabold transition-all duration-500 ${currentStatus === 'selesai' ? 'text-emerald-600' : 'text-slate-400'}`}>
                         4. Selesai & Dapat Diambil
                       </h5>
-                      <p className="text-[9px] text-slate-400">
+                      <p className="text-[9px] text-slate-500 font-medium">
                         {currentStatus === 'selesai' ? 'Selesai dapat dilakukan penjemputan oleh klien' : 'Menunggu pengerjaan siber selesai'}
                       </p>
                     </div>
                   </div>
-
+ 
                 </div>
-
+ 
                 {/* Simulation Control Switcher */}
-                <div className="pt-3 border-t border-slate-900 flex justify-between items-center bg-slate-900/40 p-2.5 rounded-xl border border-slate-800">
-                  <span className="text-[9px] font-mono text-slate-400 font-semibold tracking-wide flex items-center gap-1">
+                <div className="pt-3 border-t border-white/60 flex justify-between items-center bg-white/45 p-2.5 rounded-xl border border-white/60 backdrop-blur-sm">
+                  <span className="text-[9px] font-mono text-slate-500 font-semibold tracking-wide flex items-center gap-1">
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    SIMulasi STATUS:
+                    SIMULASI STATUS:
                   </span>
                   <div className="flex gap-1.5">
                     <button
                       onClick={() => setCurrentStatus('pengerjaan')}
-                      className={`px-2 py-1 rounded text-[9px] font-extrabold transition-all border cursor-pointer ${currentStatus === 'pengerjaan' ? 'bg-amber-500/25 border-amber-500/50 text-amber-400' : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'}`}
+                      className={`px-2 py-1 rounded text-[9px] font-extrabold transition-all border cursor-pointer ${currentStatus === 'pengerjaan' ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-white/80 border-slate-200 text-slate-500 hover:text-slate-800'}`}
                     >
                       Dalam Pengerjaan
                     </button>
                     <button
                       onClick={() => setCurrentStatus('selesai')}
-                      className={`px-2 py-1 rounded text-[9px] font-extrabold transition-all border cursor-pointer ${currentStatus === 'selesai' ? 'bg-emerald-500/25 border-emerald-500/50 text-emerald-400' : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'}`}
+                      className={`px-2 py-1 rounded text-[9px] font-extrabold transition-all border cursor-pointer ${currentStatus === 'selesai' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-white/80 border-slate-200 text-slate-500 hover:text-slate-800'}`}
                     >
                       Selesai Siap Jemput
                     </button>
                   </div>
                 </div>
-
+ 
               </div>
-
+ 
             </motion.div>
           </div>
 

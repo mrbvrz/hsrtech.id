@@ -5,16 +5,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { IconMenu2, IconX, IconLogin, IconLogout, IconLayoutDashboard } from '@tabler/icons-react';
 import { 
-  ChevronDown, 
-  Server, 
-  Cpu, 
-  Calendar, 
-  Activity, 
-  BookOpen,
-  ShoppingBag 
-} from 'lucide-react';
+  IconMenu2, 
+  IconX, 
+  IconLogin, 
+  IconLogout, 
+  IconLayoutDashboard,
+  IconChevronDown, 
+  IconServer, 
+  IconCpu, 
+  IconCalendar, 
+  IconActivity, 
+  IconBook,
+  IconShoppingBag 
+} from '@tabler/icons-react';
 import Logo from './Logo';
 
 interface NavbarProps {
@@ -161,7 +165,7 @@ export default function Navbar({
                   }`}
                 >
                   <span>Solusi</span>
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredMenu === 'solusi' ? 'rotate-180 text-brand-blue' : 'text-slate-400'}`} />
+                  <IconChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredMenu === 'solusi' ? 'rotate-180 text-brand-blue' : 'text-slate-400'}`} />
                 </button>
                 
                 <AnimatePresence>
@@ -179,7 +183,7 @@ export default function Navbar({
                         className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors group text-left"
                       >
                         <div className="p-2.5 rounded-xl bg-blue-50 text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors duration-200 mt-0.5">
-                          <Server className="w-4.5 h-4.5" />
+                          <IconServer className="w-4.5 h-4.5" />
                         </div>
                         <div>
                           <span className="block font-bold text-[13px] text-slate-800 group-hover:text-brand-blue transition-colors">Layanan</span>
@@ -196,7 +200,7 @@ export default function Navbar({
                         className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors group text-left"
                       >
                         <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200 mt-0.5">
-                          <ShoppingBag className="w-4.5 h-4.5" />
+                          <IconShoppingBag className="w-4.5 h-4.5" />
                         </div>
                         <div>
                           <span className="block font-bold text-[13px] text-slate-800 group-hover:text-emerald-600 transition-colors flex items-center gap-1.5">
@@ -225,7 +229,7 @@ export default function Navbar({
                   }`}
                 >
                   <span>HSR Care</span>
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredMenu === 'hsrcare' ? 'rotate-180 text-brand-blue' : 'text-slate-400'}`} />
+                  <IconChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveredMenu === 'hsrcare' ? 'rotate-180 text-brand-blue' : 'text-slate-400'}`} />
                 </button>
                 
                 <AnimatePresence>
@@ -243,7 +247,7 @@ export default function Navbar({
                         className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors group text-left"
                       >
                         <div className="p-2.5 rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200 mt-0.5">
-                          <Calendar className="w-4.5 h-4.5" />
+                          <IconCalendar className="w-4.5 h-4.5" />
                         </div>
                         <div>
                           <span className="block font-bold text-[13px] text-slate-800 group-hover:text-emerald-600 transition-colors">Reservasi</span>
@@ -257,7 +261,7 @@ export default function Navbar({
                         className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50 transition-colors group text-left"
                       >
                         <div className="p-2.5 rounded-xl bg-cyan-50 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white transition-colors duration-200 mt-0.5">
-                          <Activity className="w-4.5 h-4.5" />
+                          <IconActivity className="w-4.5 h-4.5" />
                         </div>
                         <div>
                           <span className="block font-bold text-[13px] text-slate-800 group-hover:text-cyan-600 transition-colors">Tracking</span>
@@ -380,7 +384,7 @@ export default function Navbar({
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-base font-semibold text-slate-600 hover:text-brand-dark hover:bg-slate-50 cursor-pointer text-left"
                   >
                     <span>Solusi</span>
-                    <ChevronDown className={`w-4.5 h-4.5 transition-transform duration-200 text-slate-400 ${openMobileSubmenu === 'solusi' ? 'rotate-180 text-brand-blue' : ''}`} />
+                    <IconChevronDown className={`w-4.5 h-4.5 transition-transform duration-200 text-slate-400 ${openMobileSubmenu === 'solusi' ? 'rotate-180 text-brand-blue' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {openMobileSubmenu === 'solusi' && (
@@ -396,7 +400,7 @@ export default function Navbar({
                           className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50"
                         >
                           <div className="p-2 rounded-lg bg-blue-50 text-brand-blue mt-0.5">
-                            <Server className="w-4 h-4" />
+                            <IconServer className="w-4 h-4" />
                           </div>
                           <div>
                             <p className="text-sm font-bold text-slate-800">Layanan</p>
@@ -413,7 +417,7 @@ export default function Navbar({
                           className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 cursor-pointer"
                         >
                           <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 mt-0.5">
-                            <ShoppingBag className="w-4 h-4" />
+                            <IconShoppingBag className="w-4 h-4" />
                           </div>
                           <div>
                             <div className="flex items-center gap-1.5">
@@ -435,7 +439,7 @@ export default function Navbar({
                     className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-base font-semibold text-slate-600 hover:text-brand-dark hover:bg-slate-50 cursor-pointer text-left"
                   >
                     <span>HSR Care</span>
-                    <ChevronDown className={`w-4.5 h-4.5 transition-transform duration-200 text-slate-400 ${openMobileSubmenu === 'hsrcare' ? 'rotate-180 text-brand-blue' : ''}`} />
+                    <IconChevronDown className={`w-4.5 h-4.5 transition-transform duration-200 text-slate-400 ${openMobileSubmenu === 'hsrcare' ? 'rotate-180 text-brand-blue' : ''}`} />
                   </button>
                   <AnimatePresence>
                     {openMobileSubmenu === 'hsrcare' && (
@@ -451,7 +455,7 @@ export default function Navbar({
                           className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50"
                         >
                           <div className="p-2 rounded-lg bg-emerald-50 text-emerald-600 mt-0.5">
-                            <Calendar className="w-4 h-4" />
+                            <IconCalendar className="w-4 h-4" />
                           </div>
                           <div>
                             <p className="text-sm font-bold text-slate-800">Reservasi</p>
@@ -464,7 +468,7 @@ export default function Navbar({
                           className="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50"
                         >
                           <div className="p-2 rounded-lg bg-cyan-50 text-cyan-600 mt-0.5">
-                            <Activity className="w-4 h-4" />
+                            <IconActivity className="w-4 h-4" />
                           </div>
                           <div>
                             <p className="text-sm font-bold text-slate-800">Tracking</p>
@@ -538,7 +542,7 @@ export default function Navbar({
             className="fixed top-24 right-4 sm:right-6 md:right-8 z-50 max-w-sm w-[90vw] bg-slate-900/95 backdrop-blur-md text-white rounded-2xl shadow-[0_20px_50px_-10px_rgba(15,23,42,0.6)] p-4 border border-slate-800 flex items-start gap-3.5"
           >
             <div className="p-2.5 bg-blue-500/10 rounded-xl text-blue-400 shrink-0">
-              <BookOpen className="w-5 h-5" />
+              <IconBook className="w-5 h-5" />
             </div>
             <div className="font-sans">
               <h4 className="font-bold text-sm text-slate-100 flex items-center gap-1.5">

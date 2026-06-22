@@ -6,17 +6,17 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Search, 
-  Calendar, 
-  Clock, 
-  ArrowLeft, 
-  BookOpen, 
-  ChevronRight, 
-  Briefcase, 
-  Tag, 
-  ThumbsUp, 
-  Share2 
-} from 'lucide-react';
+  IconSearch, 
+  IconCalendar, 
+  IconClock, 
+  IconArrowLeft, 
+  IconBook, 
+  IconChevronRight, 
+  IconBriefcase, 
+  IconTag, 
+  IconThumbUp, 
+  IconShare 
+} from '@tabler/icons-react';
 import CtaSection from './CtaSection';
 
 interface BlogPost {
@@ -192,7 +192,7 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                 {/* Search Input Box */}
                 <div className="relative w-full md:w-80">
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
-                    <Search className="w-4 h-4" />
+                    <IconSearch className="w-4 h-4" />
                   </span>
                   <input
                     type="text"
@@ -226,7 +226,7 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
               {filteredPosts.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 p-8 shadow-sm">
                   <div className="w-14 h-14 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 mx-auto mb-4">
-                    <BookOpen className="w-6 h-6" />
+                    <IconBook className="w-6 h-6" />
                   </div>
                   <h3 className="font-bold text-slate-800 text-lg">Tidak ada artikel ditemukan</h3>
                   <p className="text-slate-500 text-xs mt-1 max-w-sm mx-auto">Kami tidak dapat menemukan hasil pencarian seputar "{searchQuery}". Coba masukan kata kunci pencarian yang lain.</p>
@@ -261,11 +261,11 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                           {/* Metadata */}
                           <div className="flex items-center gap-4 text-slate-400 text-[11px] font-semibold mb-3">
                             <span className="flex items-center gap-1">
-                              <Calendar className="w-3.5 h-3.5" />
+                              <IconCalendar className="w-3.5 h-3.5" />
                               {post.date}
                             </span>
                             <span className="flex items-center gap-1">
-                              <Clock className="w-3.5 h-3.5" />
+                              <IconClock className="w-3.5 h-3.5" />
                               {post.readTime}
                             </span>
                           </div>
@@ -302,7 +302,7 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                           className="flex items-center gap-1.5 text-xs font-bold text-brand-blue group-hover:gap-2.5 transition-all cursor-pointer"
                         >
                           <span>Baca Detail</span>
-                          <ChevronRight className="w-4 h-4" />
+                          <IconChevronRight className="w-4 h-4" />
                         </button>
                       </div>
 
@@ -328,7 +328,7 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                 onClick={() => setActivePost(null)}
                 className="inline-flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-900 transition-colors mb-8 cursor-pointer focus:outline-none"
               >
-                <ArrowLeft className="w-4.5 h-4.5" />
+                <IconArrowLeft className="w-4.5 h-4.5" />
                 <span>Kembali ke List Artikel</span>
               </button>
 
@@ -340,12 +340,12 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                 <div className="flex items-center gap-3 text-slate-400 text-xs font-semibold">
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5" />
+                    <IconCalendar className="w-3.5 h-3.5" />
                     {activePost.date}
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5" />
+                    <IconClock className="w-3.5 h-3.5" />
                     {activePost.readTime}
                   </span>
                 </div>
@@ -372,10 +372,10 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                 {/* Visual Share indicators for aesthetics */}
                 <div className="ml-auto flex items-center gap-2">
                   <button className="p-2 hover:bg-slate-50 text-slate-400 hover:text-slate-600 rounded-lg transition-colors cursor-pointer" title="Sukai Artikel">
-                    <ThumbsUp className="w-4 h-4" />
+                    <IconThumbUp className="w-4 h-4" />
                   </button>
                   <button className="p-2 hover:bg-slate-50 text-slate-400 hover:text-slate-600 rounded-lg transition-colors cursor-pointer" title="Bagikan Link">
-                    <Share2 className="w-4 h-4" />
+                    <IconShare className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -401,7 +401,7 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
               <div className="mt-10 bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8">
                 <h3 className="font-display font-bold text-slate-900 text-sm sm:text-base flex items-center gap-2">
                   <span className="bg-brand-blue text-white p-1 rounded-lg">
-                    <Tag className="w-3.5 h-3.5" />
+                    <IconTag className="w-3.5 h-3.5" />
                   </span>
                   Rangkuman Solusi Praktis HSR Technology
                 </h3>
@@ -432,7 +432,7 @@ export default function Blog({ onNavigateToBooking }: BlogProps) {
                   }}
                   className="relative z-10 shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-bold bg-brand-blue hover:bg-blue-600 active:scale-95 text-white transition-all shadow-lg shadow-blue-500/20 cursor-pointer"
                 >
-                  <Briefcase className="w-4 h-4" />
+                  <IconBriefcase className="w-4 h-4" />
                   <span>Daftar Reservasi Servis</span>
                 </button>
               </div>

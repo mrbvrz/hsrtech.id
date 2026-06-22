@@ -6,33 +6,25 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  ShoppingBag, 
-  ShoppingCart, 
-  Search, 
-  Filter, 
-  Tag, 
-  Plus, 
-  Minus, 
-  Trash2, 
-  Package, 
-  ArrowLeftRight, 
-  Sparkles, 
-  TrendingUp, 
-  Coins, 
-  Upload, 
-  X, 
-  Check, 
-  ExternalLink, 
-  ShieldCheck, 
-  Truck,
-  Heart,
-  HelpCircle,
-  QrCode,
-  ArrowRight,
-  Info,
-  Eye,
-  ArrowLeft
-} from 'lucide-react';
+  IconShoppingBag, 
+  IconShoppingCart, 
+  IconSearch, 
+  IconPlus, 
+  IconMinus, 
+  IconTrash, 
+  IconPackage, 
+  IconSparkles, 
+  IconCoins, 
+  IconX, 
+  IconCheck, 
+  IconShieldCheck, 
+  IconTruck, 
+  IconQrcode, 
+  IconArrowRight, 
+  IconInfoCircle, 
+  IconEye, 
+  IconArrowLeft
+} from '@tabler/icons-react';
 
 interface Product {
   id: string;
@@ -395,7 +387,7 @@ export default function Marketplace() {
           
           <div className="relative z-10 max-w-xl space-y-4">
             <div className="inline-flex items-center gap-1.5 bg-brand-blue/20 text-blue-400 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border border-brand-blue/30">
-              <Sparkles className="w-3.5 h-3.5" />
+              <IconSparkles className="w-3.5 h-3.5" />
               <span>HSR TECH HUB MARKETPLACE v2.10</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-display font-black tracking-tight leading-tight">
@@ -407,15 +399,15 @@ export default function Marketplace() {
             
             <div className="flex flex-wrap items-center gap-5 pt-2">
               <div className="flex items-center gap-2">
-                <Check className="w-4.5 h-4.5 text-emerald-400" />
+                <IconCheck className="w-4.5 h-4.5 text-emerald-400" />
                 <span className="text-[11px] font-bold text-slate-200">Garansi Toko Terjamin</span>
               </div>
               <div className="flex items-center gap-2">
-                <Check className="w-4.5 h-4.5 text-emerald-400" />
+                <IconCheck className="w-4.5 h-4.5 text-emerald-400" />
                 <span className="text-[11px] font-bold text-slate-200">QC Lolos Uji Termal & Sirkuit</span>
               </div>
               <div className="flex items-center gap-2">
-                <Check className="w-4.5 h-4.5 text-emerald-400" />
+                <IconCheck className="w-4.5 h-4.5 text-emerald-400" />
                 <span className="text-[11px] font-bold text-slate-200">Konsultasi Sebelum Beli</span>
               </div>
             </div>
@@ -456,7 +448,7 @@ export default function Marketplace() {
               {/* Search Bar and Category Buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <IconSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     ref={searchInputRef}
                     type="text"
@@ -559,7 +551,7 @@ export default function Marketplace() {
             {/* PRODUCT GRID LISTINGS */}
             {filteredProducts.length === 0 ? (
               <div className="bg-white rounded-3xl p-16 text-center shadow-[0_15px_40px_rgba(15,23,42,0.03)] flex flex-col items-center justify-center space-y-4">
-                <Package className="w-12 h-12 text-slate-350 stroke-[1.5]" />
+                <IconPackage className="w-12 h-12 text-slate-350 stroke-[1.5]" />
                 <div>
                   <h3 className="text-sm font-extrabold text-slate-800">Tidak Ada Produk yang Cocok</h3>
                   <p className="text-[11px] text-slate-500 mt-1 font-medium max-w-sm">
@@ -628,7 +620,7 @@ export default function Marketplace() {
                       {/* Premium Hover Details Overlay */}
                       <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
                         <span className="bg-white/95 text-slate-900 text-[11px] font-black px-4 py-2 rounded-xl shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 flex items-center gap-1.5 uppercase tracking-wider">
-                          <Eye className="w-3.5 h-3.5 text-brand-blue" />
+                          <IconEye className="w-3.5 h-3.5 text-brand-blue" />
                           <span>Lihat Detail</span>
                         </span>
                       </div>
@@ -675,7 +667,7 @@ export default function Marketplace() {
                             className="p-2 border border-slate-200 hover:border-slate-350 hover:bg-slate-50 rounded-xl text-slate-500 hover:text-slate-800 transition-colors cursor-pointer text-xs"
                             title="Detail Spesifikasi"
                           >
-                            <Info className="w-4 h-4" />
+                            <IconInfoCircle className="w-4 h-4" />
                           </button>
                           
                           <button
@@ -685,7 +677,7 @@ export default function Marketplace() {
                             }}
                             className="bg-brand-blue hover:bg-brand-blue/90 text-white font-extrabold px-3 py-2 rounded-xl text-[11px] flex items-center gap-1.5 transition-all shadow-sm shadow-blue-500/10 cursor-pointer active:scale-95"
                           >
-                            <ShoppingCart className="w-3.5 h-3.5" />
+                            <IconShoppingCart className="w-3.5 h-3.5" />
                             <span>Beli</span>
                           </button>
                         </div>
@@ -709,7 +701,7 @@ export default function Marketplace() {
               
               <div className="space-y-1">
                 <span className="inline-flex items-center gap-1 text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded tracking-widest uppercase">
-                  <Coins className="w-3 h-3" />
+                  <IconCoins className="w-3 h-3" />
                   <span>C2B IT Trade-In</span>
                 </span>
                 <h3 className="font-display font-extrabold text-slate-800 text-sm tracking-wide">
@@ -845,7 +837,7 @@ export default function Marketplace() {
                         className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5"
                       >
                         <span>Ajukan Penjualan / Ambil Penawaran</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        <IconArrowRight className="w-3.5 h-3.5" />
                       </button>
                     ) : (
                       <motion.div 
@@ -872,7 +864,7 @@ export default function Marketplace() {
 
               <div className="space-y-3 text-xs leading-relaxed">
                 <div className="flex gap-3">
-                  <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                  <IconShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
                   <div>
                     <h5 className="font-bold text-[11px] text-slate-100">Kondisi Bersertifikasi</h5>
                     <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">Setiap sirkuit papan dan daya diuji ketat menggunakan multitester & stress-test termal.</p>
@@ -880,7 +872,7 @@ export default function Marketplace() {
                 </div>
 
                 <div className="flex gap-3">
-                  <Truck className="w-5 h-5 text-indigo-400 shrink-0" />
+                  <IconTruck className="w-5 h-5 text-indigo-400 shrink-0" />
                   <div>
                     <h5 className="font-bold text-[11px] text-slate-100">Layanan Antar-Pasang</h5>
                     <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">Khusus wilayah Jakarta Barat & sekitarnya, teknisi kami siap antar dan langsung instalasi on-site.</p>
@@ -897,7 +889,7 @@ export default function Marketplace() {
         <div className="mt-16 bg-slate-100/60 rounded-3xl p-8 border border-slate-200/50 shadow-[0_4px_24px_rgba(15,23,42,0.01)] text-slate-800">
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-brand-blue bg-blue-50/50 text-[#2563eb] px-3.5 py-1 rounded-full uppercase tracking-wider border border-blue-100">
-              <ShoppingBag className="w-3.5 h-3.5" />
+              <IconShoppingBag className="w-3.5 h-3.5" />
               <span>OFFICIAL MERCHANT PARTNERS</span>
             </span>
             <h3 className="font-display font-extrabold text-slate-850 text-lg sm:text-xl md:text-2xl mt-2 tracking-tight">
@@ -961,7 +953,7 @@ export default function Marketplace() {
           {/* Explanation block about price differences */}
           <div className="mt-8 max-w-3xl mx-auto bg-amber-50/50 border border-amber-200/50 rounded-2xl p-5 flex gap-4 items-start">
             <div className="p-2 bg-amber-100 text-amber-700 rounded-xl shrink-0 mt-0.5">
-              <Info className="w-4.5 h-4.5" />
+              <IconInfoCircle className="w-4.5 h-4.5" />
             </div>
             <div className="space-y-2 text-left">
               <h5 className="font-bold text-[11px] text-amber-900 uppercase tracking-widest font-mono">PEMBERITAHUAN SELISIH HARGA PLATFORM:</h5>
@@ -1000,7 +992,7 @@ export default function Marketplace() {
                 onClick={() => setActiveProduct(null)}
                 className="flex items-center gap-2 px-4 py-2.5 bg-white text-xs font-bold text-slate-700 hover:text-brand-blue border rounded-xl shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:shadow-md transition-all cursor-pointer self-start"
               >
-                <ArrowLeft className="w-4 h-4 text-[#2563eb]" />
+                <IconArrowLeft className="w-4 h-4 text-[#2563eb]" />
                 <span>Kembali ke Katalog Jual Beli</span>
               </button>
 
@@ -1022,17 +1014,17 @@ export default function Marketplace() {
 
                   <div className="grid grid-cols-3 gap-3">
                     <div className="bg-emerald-50/50 border border-emerald-100 p-2.5 rounded-2xl text-center space-y-1">
-                      <ShieldCheck className="w-5 h-5 text-emerald-600 mx-auto" />
+                      <IconShieldCheck className="w-5 h-5 text-emerald-600 mx-auto" />
                       <span className="block text-[9px] font-black uppercase text-emerald-800">Garansi Toko</span>
                       <span className="block text-[9.5px] font-bold text-slate-500 leading-none">{activeProduct.warranty}</span>
                     </div>
                     <div className="bg-blue-50/50 border border-blue-100 p-2.5 rounded-2xl text-center space-y-1">
-                      <Truck className="w-5 h-5 text-blue-600 mx-auto" />
+                      <IconTruck className="w-5 h-5 text-blue-600 mx-auto" />
                       <span className="block text-[9px] font-black uppercase text-blue-800">Instan Delivery</span>
                       <span className="block text-[9.5px] font-bold text-slate-500 leading-none">Ready Send</span>
                     </div>
                     <div className="bg-amber-50/50 border border-amber-100 p-2.5 rounded-2xl text-center space-y-1">
-                      <Sparkles className="w-5 h-5 text-amber-600 mx-auto" />
+                      <IconSparkles className="w-5 h-5 text-amber-600 mx-auto" />
                       <span className="block text-[9px] font-black uppercase text-amber-800">QC Level</span>
                       <span className="block text-[9.5px] font-bold text-slate-500 leading-none">Teruji 100%</span>
                     </div>
@@ -1063,7 +1055,7 @@ export default function Marketplace() {
                         {activeProduct.specification.map((spec, sidx) => (
                           <div key={sidx} className="flex items-start gap-3 text-slate-705">
                             <div className="p-1 rounded-full bg-emerald-100 text-emerald-600 shrink-0 mt-0.5 animate-pulse">
-                              <Check className="w-3 h-3" />
+                              <IconCheck className="w-3 h-3" />
                             </div>
                             <span className="font-semibold font-sans text-xs leading-relaxed text-slate-805">{spec}</span>
                           </div>
@@ -1101,7 +1093,7 @@ export default function Marketplace() {
                         }}
                         className="flex-1 sm:flex-initial py-3.5 px-6 bg-slate-950 hover:bg-slate-850 text-white hover:text-teal-400 text-xs font-black rounded-xl transition-all shadow cursor-pointer flex items-center justify-center gap-2 active:scale-95 animate-bounce"
                       >
-                        <ShoppingCart className="w-4 h-4 text-teal-400 animate-pulse" />
+                        <IconShoppingCart className="w-4 h-4 text-teal-400 animate-pulse" />
                         <span>Beli & Tambah ke Keranjang</span>
                       </button>
                     </div>
@@ -1123,7 +1115,7 @@ export default function Marketplace() {
           className="w-13 h-13 rounded-full bg-slate-950 text-white flex items-center justify-center relative shadow-2xl shadow-slate-950/40 border border-slate-800 transition-transform active:scale-95 cursor-pointer"
           whileHover={{ scale: 1.05 }}
         >
-          <ShoppingBag className="w-5 h-5 text-teal-400" />
+          <IconShoppingBag className="w-5 h-5 text-teal-400" />
           
           {/* Cart items counter overlay */}
           {cart.length > 0 && (
@@ -1152,23 +1144,22 @@ export default function Marketplace() {
               onClick={(e) => e.stopPropagation()}
               className="absolute top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col justify-between overflow-hidden"
             >
-              
-              {/* Drawer Title Block */}
+                       {/* Drawer Title Block */}
               <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <div className="flex items-center gap-2">
                   <div className="p-2 bg-slate-900 rounded-xl text-white">
-                    <ShoppingBag className="w-4 h-4 text-teal-400" />
+                    <IconShoppingBag className="w-4 h-4 text-teal-400" />
                   </div>
                   <div>
                     <h3 className="font-display font-black text-slate-900 text-sm">Keranjang Belanja</h3>
-                    <span className="block text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">ESTIMATED BILLING STATEMENT</span>
+                    <span className="block text-[10px] text-slate-505 font-bold uppercase tracking-wider mt-0.5">ESTIMATED BILLING STATEMENT</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsCartOpen(false)}
                   className="p-1.5 rounded-lg bg-white border text-slate-400 hover:text-slate-800 hover:bg-slate-50 cursor-pointer"
                 >
-                  <X className="w-4 h-4" />
+                  <IconX className="w-4 h-4" />
                 </button>
               </div>
 
@@ -1192,7 +1183,7 @@ export default function Marketplace() {
                 {cart.length === 0 && checkoutStep !== 'completed' && (
                   <div className="flex flex-col items-center justify-center text-center py-16 space-y-4">
                     <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center border border-dashed text-slate-300">
-                      <ShoppingCart className="w-8 h-8" />
+                      <IconShoppingCart className="w-8 h-8" />
                     </div>
                     <div>
                       <h4 className="font-extrabold text-slate-700 text-sm">Keranjang Anda Kosong</h4>
@@ -1232,14 +1223,14 @@ export default function Marketplace() {
                                   onClick={() => updateCartQuantity(item.product.id, -1)}
                                   className="p-0.5 text-slate-500 hover:text-slate-800 hover:bg-slate-200 rounded cursor-pointer"
                                 >
-                                  <Minus className="w-3 h-3" />
+                                  <IconMinus className="w-3 h-3" />
                                 </button>
                                 <span className="font-mono font-bold text-xs text-slate-805 select-none">{item.quantity}</span>
                                 <button
                                   onClick={() => updateCartQuantity(item.product.id, 1)}
                                   className="p-0.5 text-slate-500 hover:text-slate-800 hover:bg-slate-200 rounded cursor-pointer"
                                 >
-                                  <Plus className="w-3 h-3" />
+                                  <IconPlus className="w-3 h-3" />
                                 </button>
                               </div>
                             </div>
@@ -1249,7 +1240,7 @@ export default function Marketplace() {
                             onClick={() => removeFromCart(item.product.id)}
                             className="text-slate-350 hover:text-rose-600 p-1 rounded-lg hover:bg-rose-50 cursor-pointer self-start shrink-0 transition-colors"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <IconTrash className="w-4 h-4" />
                           </button>
                         </div>
                       ))}
@@ -1384,7 +1375,7 @@ export default function Marketplace() {
                     <div className="max-w-[190px] mx-auto bg-slate-50 p-4 border rounded-3xl relative overflow-hidden shadow-sm flex flex-col items-center">
                       <div className="bg-slate-950 p-2.5 rounded-2xl relative border border-slate-800">
                         {/* Simulated QR Code matrix vectors */}
-                        <QrCode className="w-32 h-32 text-white" />
+                        <IconQrcode className="w-32 h-32 text-white" />
                       </div>
                       <span className="text-[8px] font-mono font-extrabold tracking-widest text-slate-500 uppercase mt-2">NMID: HSR_OFFICIAL_QRIS</span>
                     </div>
@@ -1392,7 +1383,7 @@ export default function Marketplace() {
                     {/* Bank Transfer alternative options */}
                     <div className="bg-slate-50 rounded-2xl p-4 text-left border border-slate-100 space-y-2">
                       <span className="block text-[9.5px] font-bold text-slate-400 uppercase tracking-widest font-mono">ALTERNATIF: MANUAL TRANSFER BANK</span>
-                      <div className="flex justify-between items-center text-xs text-slate-700">
+                      <div className="flex justify-between items-center text-xs text-slate-707">
                         <span>Bank Central Asia (BCA)</span>
                         <strong className="font-mono text-slate-900">012-3445-6789</strong>
                       </div>
@@ -1404,7 +1395,7 @@ export default function Marketplace() {
 
                     {/* Simulation tools reminder */}
                     <div className="p-3.5 bg-cyan-50 border border-cyan-100 rounded-2xl text-[10px] text-slate-650 font-sans leading-relaxed text-left flex gap-2">
-                      <Info className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
+                       <IconInfoCircle className="w-4 h-4 text-cyan-600 shrink-0 mt-0.5" />
                       <div>
                         Ini adalah simulasi pembelian e-commerce resmi HSR. Klik <strong>"Sudah Konfirmasi Pembayaran"</strong> untuk menyelesaikan simulasi pesanan Anda dan mendapatkan rincian kuitansi pengiriman instan.
                       </div>
@@ -1416,7 +1407,7 @@ export default function Marketplace() {
                 {checkoutStep === 'completed' && (
                   <div className="space-y-6 text-center py-12">
                     <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto border border-emerald-200">
-                      <Check className="w-7 h-7" />
+                      <IconCheck className="w-7 h-7" />
                     </div>
 
                     <div className="space-y-2 font-sans">
@@ -1486,7 +1477,7 @@ export default function Marketplace() {
                       className="w-full py-3 bg-slate-900 hover:bg-slate-850 text-white text-xs font-black rounded-xl transition-all shadow cursor-pointer flex items-center justify-center gap-1.5"
                     >
                       <span>Lanjutkan ke Alamat Pengiriman</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <IconArrowRight className="w-3.5 h-3.5" />
                     </button>
                   )}
 

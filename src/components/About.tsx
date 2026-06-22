@@ -6,17 +6,15 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
-  Award, 
-  Users, 
-  MapPin, 
-  ShieldCheck, 
-  Clock, 
-  ThumbsUp, 
-  CheckCircle, 
-  TrendingUp, 
-  Server, 
-  Wrench 
-} from 'lucide-react';
+  IconAward, 
+  IconUsers, 
+  IconShieldCheck, 
+  IconClock, 
+  IconCircleCheck, 
+  IconTrendingUp, 
+  IconServer, 
+  IconTools 
+} from '@tabler/icons-react';
 import CtaSection from './CtaSection';
 
 interface Milestone {
@@ -91,17 +89,17 @@ export default function About() {
 
   const values: ValueProp[] = [
     {
-      icon: <ShieldCheck className="w-6 h-6 text-emerald-600" />,
+      icon: <IconShieldCheck className="w-6 h-6 text-emerald-600" />,
       title: 'Kualitas & Presisi Jepang',
       desc: 'Menerapkan metode perbaikan terstruktur bertahap dari diagnosis IC, penggantian preventif, hingga pengujian beban beban maksimal.'
     },
     {
-      icon: <Award className="w-6 h-6 text-brand-blue" />,
+      icon: <IconAward className="w-6 h-6 text-brand-blue" />,
       title: 'Teknisi Tersertifikasi Resmi',
       desc: 'Seluruh pakar teknis lapangan kami memegang sertifikat internasional aktif baik cisco, mikrotik, maupun sertifikasi safety K3.'
     },
     {
-      icon: <Clock className="w-6 h-6 text-amber-600" />,
+      icon: <IconClock className="w-6 h-6 text-amber-600" />,
       title: 'Transparansi Tanpa Hidden Cost',
       desc: 'Semua rincian biaya komponen terdaftar jelas di awal. Konsumen menyetujui penawaran sebelum perbaikan fisik dimulai.'
     }
@@ -238,7 +236,7 @@ export default function About() {
                   className="space-y-3"
                 >
                   <span className="text-2xl sm:text-3xl font-black font-display text-brand-blue flex items-center gap-2">
-                    <TrendingUp className="w-6 h-6" />
+                    <IconTrendingUp className="w-6 h-6" />
                     Transformasi {stone.year}
                   </span>
                   <h3 className="font-bold text-slate-900 text-lg sm:text-xl">{stone.title}</h3>
@@ -289,7 +287,7 @@ export default function About() {
                 <div className="px-6 pb-6 pt-3 border-t border-slate-50 flex items-center justify-between text-slate-300 font-mono text-[9px] uppercase tracking-wider font-semibold">
                   <span>HSR CO-CORP</span>
                   <span className="flex items-center gap-1 text-emerald-600">
-                    <CheckCircle className="w-3.5 h-3.5" />
+                    <IconCircleCheck className="w-3.5 h-3.5" />
                     Verified
                   </span>
                 </div>
@@ -306,19 +304,19 @@ export default function About() {
           <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest font-mono">KREDIBILITAS SERTIFIKASI GLOBAL</span>
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-14 mt-6 opacity-60">
             <div className="flex items-center gap-2 font-display font-extrabold text-sm sm:text-base text-slate-600">
-              <Server className="w-5 h-5 text-indigo-600" />
+              <IconServer className="w-5 h-5 text-indigo-600" />
               <span>MikroTik Certified</span>
             </div>
             <div className="flex items-center gap-2 font-display font-extrabold text-sm sm:text-base text-slate-600">
-              <Award className="w-5 h-5 text-blue-600" />
+              <IconAward className="w-5 h-5 text-blue-600" />
               <span>Cisco CCNA Scholar</span>
             </div>
             <div className="flex items-center gap-2 font-display font-extrabold text-sm sm:text-base text-slate-600">
-              <Wrench className="w-5 h-5 text-emerald-600" />
+              <IconTools className="w-5 h-5 text-emerald-600" />
               <span>Hikvision Partner</span>
             </div>
             <div className="flex items-center gap-2 font-display font-extrabold text-sm sm:text-base text-slate-600">
-              <Users className="w-5 h-5 text-slate-700" />
+              <IconUsers className="w-5 h-5 text-slate-700" />
               <span>PT Dinamika Safety K3</span>
             </div>
           </div>

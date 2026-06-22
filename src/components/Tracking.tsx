@@ -492,7 +492,7 @@ Anda pada layanan resmi HSR Technology!
                       <button
                         type="button"
                         onClick={handleStartBarcodeScan}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-cyan-400 text-[10px] font-extrabold rounded-lg shadow-sm cursor-pointer"
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 bg-brand-blue hover:bg-blue-700 text-white text-[10px] font-extrabold rounded-lg shadow-sm cursor-pointer transition-colors"
                         title="Scan Barcode / QR Code"
                       >
                         <IconScan className="w-3.5 h-3.5" />
@@ -554,15 +554,15 @@ Anda pada layanan resmi HSR Technology!
               </div>
 
               {/* Grid of demo triggers for quick previewing */}
-              <div className="mt-8 bg-slate-900 rounded-3xl p-6 text-white relative overflow-hidden shadow-xl shadow-slate-950/20">
+              <div className="mt-8 bg-white/45 backdrop-blur-md border border-white/75 rounded-3xl p-6 text-slate-800 relative overflow-hidden shadow-[0_12px_30px_rgba(15,23,42,0.03)]">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/5 rounded-full blur-2xl pointer-events-none" />
                 
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="w-1.5 h-3 bg-cyan-400 rounded-full" />
-                  <h4 className="font-display font-extrabold text-sm tracking-wide">Uji Coba Demo Instan (Disarankan)</h4>
+                  <span className="w-1.5 h-3 bg-brand-blue rounded-full" />
+                  <h4 className="font-display font-extrabold text-sm tracking-wide text-slate-800">Uji Coba Demo Instan (Disarankan)</h4>
                 </div>
                 
-                <p className="text-[11px] text-slate-400 mb-4 font-medium leading-relaxed">
+                <p className="text-[11px] text-slate-500 mb-4 font-medium leading-relaxed font-sans">
                   Tidak memiliki tiket aktif? Jangan khawatir. Klik salah satu kartu demo di bawah untuk mengisi formulir tracking secara otomatis dengan skenario servis yang realistis:
                 </p>
 
@@ -571,20 +571,20 @@ Anda pada layanan resmi HSR Technology!
                     <div 
                       key={demo.id} 
                       onClick={() => handleShortcutDemo(demo)}
-                      className="bg-slate-850 hover:bg-slate-800 p-3 rounded-xl cursor-pointer text-left transition-all duration-200"
+                      className="bg-white/60 border border-white/80 hover:bg-white/90 p-3 rounded-xl cursor-pointer text-left transition-all duration-200 shadow-sm"
                     >
-                      <div className="flex items-center justify-between text-[10px] font-bold text-cyan-400">
+                      <div className="flex items-center justify-between text-[10px] font-bold text-brand-blue">
                         <span>{demo.id}</span>
                         <span className={`px-2 py-0.5 rounded-full text-[8px] uppercase ${
-                          demo.status === 'completed' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
+                          demo.status === 'completed' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
                         }`}>
                           {demo.status === 'completed' ? 'Selesai' : 'Dalam Proses'}
                         </span>
                       </div>
-                      <h5 className="font-bold text-xs mt-1 text-slate-100 line-clamp-1">{demo.serviceTitle}</h5>
-                      <div className="text-[10px] text-slate-400 mt-2 flex items-center justify-between">
+                      <h5 className="font-bold text-xs mt-1 text-slate-800 line-clamp-1">{demo.serviceTitle}</h5>
+                      <div className="text-[10px] text-slate-500 mt-2 flex items-center justify-between">
                         <span>Klien: {demo.clientName}</span>
-                        <span className="font-mono">Suffix: {demo.phoneSuffix}</span>
+                        <span className="font-mono text-slate-400">Suffix: {demo.phoneSuffix}</span>
                       </div>
                     </div>
                   ))}
@@ -630,52 +630,52 @@ Anda pada layanan resmi HSR Technology!
                 <div className="lg:col-span-4 flex flex-col gap-6">
                   
                   {/* General Ticket Info Card */}
-                  <div className="bg-slate-900 text-white rounded-3xl p-6 shadow-xl shadow-slate-950/25 relative overflow-hidden shrink-0">
-                    <div className="absolute inset-0 grid-bg-dark opacity-10 pointer-events-none" />
+                  <div className="bg-white border border-slate-200/80 text-slate-800 rounded-3xl p-6 shadow-[0_15px_40px_rgba(15,23,42,0.06)] relative overflow-hidden shrink-0">
+                    <div className="absolute inset-0 grid-bg opacity-5 pointer-events-none" />
                     <div className="relative z-10 space-y-4">
                       
                       <div className="flex justify-between items-start">
                         <div>
-                          <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">Nomor Tiket</span>
-                          <h2 className="text-xl font-display font-black tracking-tight mt-0.5 text-white">{activeTicket.id}</h2>
+                          <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Nomor Tiket</span>
+                          <h2 className="text-xl font-display font-black tracking-tight mt-0.5 text-slate-900">{activeTicket.id}</h2>
                         </div>
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase ${
                           activeTicket.status === 'completed' 
-                            ? 'bg-emerald-500/15 text-emerald-400' 
-                            : 'bg-amber-500/15 text-amber-400'
+                            ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' 
+                            : 'bg-amber-50 text-amber-600 border border-amber-100'
                         }`}>
                           {activeTicket.status === 'completed' ? 'Unit Selesai' : 'Sedang Dikerjakan'}
                         </span>
                       </div>
 
-                      <div className="border-t border-slate-800 pt-3.5 space-y-2.5 text-xs">
+                      <div className="border-t border-slate-100 pt-3.5 space-y-2.5 text-xs">
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Pekerjaan</span>
-                          <span className="font-extrabold text-slate-100 text-right max-w-[200px] line-clamp-1">{activeTicket.serviceTitle}</span>
+                          <span className="text-slate-500 font-medium font-sans">Pekerjaan</span>
+                          <span className="font-extrabold text-slate-800 text-right max-w-[200px] line-clamp-1">{activeTicket.serviceTitle}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Atas Nama Klien</span>
-                          <span className="font-extrabold text-slate-100">{activeTicket.clientName}</span>
+                          <span className="text-slate-500 font-medium font-sans">Atas Nama Klien</span>
+                          <span className="font-extrabold text-slate-800">{activeTicket.clientName}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Tanggal Booking</span>
-                          <span className="font-extrabold text-slate-100">{activeTicket.bookingDate}</span>
+                          <span className="text-slate-500 font-medium font-sans">Tanggal Booking</span>
+                          <span className="font-extrabold text-slate-800">{activeTicket.bookingDate}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">No HP Kontrak</span>
-                          <span className="font-extrabold text-slate-100">{activeTicket.clientPhone}</span>
+                          <span className="text-slate-500 font-medium font-sans">No HP Kontrak</span>
+                          <span className="font-extrabold text-slate-800">{activeTicket.clientPhone}</span>
                         </div>
                       </div>
 
                       {/* Progress Line */}
-                      <div className="pt-3 border-t border-slate-800">
-                        <div className="flex justify-between text-[11px] font-bold text-slate-400 mb-1.5">
+                      <div className="pt-3 border-t border-slate-100">
+                        <div className="flex justify-between text-[11px] font-bold text-slate-500 mb-1.5 font-sans">
                           <span>Progress Pemulihan</span>
-                          <span className="text-cyan-400 text-xs font-black">{activeTicket.progress}%</span>
+                          <span className="text-brand-blue text-xs font-black">{activeTicket.progress}%</span>
                         </div>
-                        <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+                        <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
                           <motion.div 
-                            className="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full"
+                            className="bg-gradient-to-r from-blue-600 to-indigo-500 h-full rounded-full"
                             initial={{ width: 0 }}
                             animate={{ width: `${activeTicket.progress}%` }}
                             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -779,23 +779,23 @@ Anda pada layanan resmi HSR Technology!
                 <div className="lg:col-span-8 flex flex-col gap-6">
 
                   {/* Realtime Action Logs Terminal Feed (SYSTEM_LOG_FEED v1.02) */}
-                  <div className="bg-slate-950 font-mono text-xs text-slate-300 rounded-3xl p-5 shadow-xl shadow-slate-950/30 overflow-hidden flex flex-col justify-between min-h-[300px]">
+                  <div className="bg-slate-50 border border-slate-200 font-mono text-xs text-slate-705 rounded-3xl p-5 shadow-[0_15px_40px_rgba(15,23,42,0.06)] overflow-hidden flex flex-col justify-between min-h-[300px]">
                     <div>
-                      <div className="flex items-center justify-between border-b border-slate-905 pb-3 mb-4">
+                      <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
                         <div className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0" />
                           <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0" />
                           <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
-                          <span className="text-[10px] font-extrabold font-mono text-slate-500 uppercase tracking-widest ml-1">SYSTEM_LOG_FEED v1.02</span>
+                          <span className="text-[10px] font-extrabold font-mono text-slate-400 uppercase tracking-widest ml-1">SYSTEM_LOG_FEED v1.02</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider">Secured Sync</span>
+                          <span className="text-[9px] uppercase font-bold text-emerald-600 tracking-wider">Secured Sync</span>
                           <button
                             onClick={() => {
                               setLogSearchQuery('');
                               setIsLogModalOpen(true);
                             }}
-                            className="p-1.5 bg-slate-900 border border-slate-800 hover:border-slate-750 hover:bg-slate-850 rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center"
+                            className="p-1.5 bg-white border border-slate-200 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-800 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
                             title="Lihat Detail Penuh Log"
                           >
                             <IconArrowsMaximize className="w-3.5 h-3.5" />
@@ -806,12 +806,12 @@ Anda pada layanan resmi HSR Technology!
                       <div className="space-y-3.5 max-h-[250px] overflow-y-auto pr-1 text-[11px] leading-relaxed">
                         {activeTicket.logs.map((log, i) => (
                           <div key={i} className="flex gap-2">
-                            <span className="text-slate-500 shrink-0 select-none">[{log.time}]</span>
+                            <span className="text-slate-400 shrink-0 select-none">[{log.time}]</span>
                             <span className={`
-                              ${log.category === 'warning' ? 'text-amber-400 font-bold' : ''}
-                              ${log.category === 'success' ? 'text-emerald-400 font-bold' : ''}
-                              ${log.category === 'info' ? 'text-cyan-300' : ''}
-                              text-slate-300
+                              ${log.category === 'warning' ? 'text-amber-600 font-bold' : ''}
+                              ${log.category === 'success' ? 'text-emerald-600 font-bold' : ''}
+                              ${log.category === 'info' ? 'text-blue-600' : ''}
+                              text-slate-650
                             `}>
                               {log.text}
                             </span>
@@ -820,9 +820,9 @@ Anda pada layanan resmi HSR Technology!
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-900 mt-4 flex items-center justify-between text-[10px] text-slate-600 font-mono">
+                    <div className="pt-4 border-t border-slate-200 mt-4 flex items-center justify-between text-[10px] text-slate-400 font-mono">
                       <span>CONSOLE SYNC STABLE</span>
-                      <span className="animate-pulse">● FEED ACTIVE</span>
+                      <span className="text-emerald-600 font-bold animate-pulse">● FEED ACTIVE</span>
                     </div>
                   </div>
 
@@ -864,18 +864,18 @@ Anda pada layanan resmi HSR Technology!
                     </div>
 
                     {/* Interactive Mock Map Vector Grid */}
-                    <div className="bg-slate-900 text-white rounded-3xl p-5 shadow-2xl shadow-slate-950/20 h-[490px] relative overflow-hidden flex flex-col justify-between">
+                    <div className="bg-white/45 backdrop-blur-md border border-white/80 text-slate-800 rounded-3xl p-5 shadow-[0_15px_40px_rgba(15,23,42,0.04)] h-[490px] relative overflow-hidden flex flex-col justify-between">
                       {/* Animated blueprint map decor */}
-                      <div className="absolute inset-0 grid-bg-dark opacity-15 pointer-events-none" />
+                      <div className="absolute inset-0 grid-bg opacity-5 pointer-events-none" />
                       
                       {/* Simulated vector track streets */}
                       <div className="absolute inset-0 pointer-events-none">
-                        <svg width="100%" height="100%" className="opacity-20">
-                          <line x1="10%" y1="0%" x2="10%" y2="100%" stroke="white" strokeWidth="1.5" />
-                          <line x1="45%" y1="0%" x2="45%" y2="100%" stroke="white" strokeWidth="1.5" />
-                          <line x1="80%" y1="0%" x2="80%" y2="100%" stroke="white" strokeWidth="1.5" />
-                          <line x1="0%" y1="35%" x2="100%" y2="35%" stroke="white" strokeWidth="1.5" />
-                          <line x1="0%" y1="75%" x2="100%" y2="75%" stroke="white" strokeWidth="1.5" />
+                        <svg width="100%" height="100%" className="opacity-40">
+                          <line x1="10%" y1="0%" x2="10%" y2="100%" stroke="#cbd5e1" strokeWidth="1.5" />
+                          <line x1="45%" y1="0%" x2="45%" y2="100%" stroke="#cbd5e1" strokeWidth="1.5" />
+                          <line x1="80%" y1="0%" x2="80%" y2="100%" stroke="#cbd5e1" strokeWidth="1.5" />
+                          <line x1="0%" y1="35%" x2="100%" y2="35%" stroke="#cbd5e1" strokeWidth="1.5" />
+                          <line x1="0%" y1="75%" x2="100%" y2="75%" stroke="#cbd5e1" strokeWidth="1.5" />
                           {/* Curved path for route of tech */}
                           <path d="M 45 75 Q 60 55 80 35" fill="none" stroke="#2563eb" strokeWidth="3" strokeDasharray="6,4" />
                         </svg>
@@ -883,32 +883,32 @@ Anda pada layanan resmi HSR Technology!
 
                       {/* Flashing GPS dots */}
                       <div className="absolute left-[45%] top-[75%] -translate-x-[50%] -translate-y-[50%] pointer-events-none z-10 flex flex-col items-center">
-                        <span className="text-[8px] bg-slate-900 border px-1 rounded text-slate-300 font-bold uppercase mb-1">Workshop HSR</span>
+                        <span className="text-[8px] bg-white border border-slate-200 px-1.5 py-0.5 rounded text-slate-600 font-bold uppercase mb-1 shadow-sm">Workshop HSR</span>
                         <span className="w-3 h-3 rounded-full bg-slate-100 border border-brand-dark flex items-center justify-center">
                           <span className="w-1.5 h-1.5 rounded-full bg-brand-dark" />
                         </span>
                       </div>
 
                       <div className="absolute left-[80%] top-[35%] -translate-x-[50%] -translate-y-[50%] pointer-events-none z-10 flex flex-col items-center">
-                        <span className="text-[8px] bg-brand-blue px-1 rounded text-white font-bold uppercase mb-1 animate-bounce">Klien</span>
-                        <span className="w-4.5 h-4.5 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500">
+                        <span className="text-[8px] bg-brand-blue px-1.5 py-0.5 rounded text-white font-bold uppercase mb-1 animate-bounce shadow-sm">Klien</span>
+                        <span className="w-4.5 h-4.5 rounded-full bg-blue-100 flex items-center justify-center border border-blue-500">
                           <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-pulse" />
                         </span>
                       </div>
 
                       <div className="relative z-10 flex justify-between items-start">
                         <div>
-                          <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-400">Peta Lokasi Layanan</span>
-                          <h4 className="font-bold text-xs text-slate-100 mt-1">Grogol Workshop → Alamat Client</h4>
+                          <span className="text-[10px] font-extrabold uppercase tracking-widest text-blue-600">Peta Lokasi Layanan</span>
+                          <h4 className="font-bold text-xs text-slate-800 mt-1">Grogol Workshop → Alamat Client</h4>
                         </div>
-                        <span className="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold text-blue-400 bg-blue-500/10 border border-blue-500/20">
+                        <span className="px-2.5 py-0.5 rounded-full text-[9px] font-extrabold text-blue-600 bg-blue-50 border border-blue-200 shadow-sm">
                           Jarak Terpantau: 4.8 Km
                         </span>
                       </div>
 
-                      <div className="relative z-10 flex items-center gap-3 bg-black/40 p-2.5 rounded-xl border border-white/5 backdrop-blur-sm">
-                        <IconMapPin className="w-4 h-4 text-indigo-400 shrink-0" />
-                        <span className="text-[10px] text-slate-300 leading-normal font-sans font-medium">
+                      <div className="relative z-10 flex items-center gap-3 bg-white/90 p-2.5 rounded-xl border border-slate-200 shadow-sm backdrop-blur-sm">
+                        <IconMapPin className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <span className="text-[10px] text-slate-600 leading-normal font-sans font-medium">
                           {activeTicket.status === 'completed' 
                             ? 'Selesai: Perangkat aman disimpan siap serah terima dan pengembalian unit.'
                             : 'Monitoring Progress: Unit aktif dikerjakan di workbench teknisi HSR Grogol.'
@@ -1207,29 +1207,29 @@ Anda pada layanan resmi HSR Technology!
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-brand-dark/95 backdrop-blur-md p-4"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
             >
               <motion.div 
                 initial={{ scale: 0.95, y: 15 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 15 }}
-                className="max-w-md w-full bg-slate-900 border border-slate-800 text-white rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between"
+                className="max-w-md w-full bg-white border border-slate-200 text-slate-800 rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between shadow-2xl"
               >
                 {/* HUD Decor overlay */}
-                <div className="absolute top-2 left-2 text-[8px] text-cyan-400/50 font-mono">SYS_DEC: ONLINE</div>
-                <div className="absolute top-2 right-2 text-[8px] text-cyan-400/50 font-mono">FRAME_LAT: 24MS</div>
+                <div className="absolute top-2 left-2 text-[8px] text-slate-400 font-mono">SYS_DEC: ONLINE</div>
+                <div className="absolute top-2 right-2 text-[8px] text-slate-400 font-mono">FRAME_LAT: 24MS</div>
 
-                <div className="flex justify-between items-start border-b border-slate-800 pb-3 mb-5">
+                <div className="flex justify-between items-start border-b border-slate-100 pb-3 mb-5">
                   <div>
-                    <h3 className="font-display font-extrabold text-sm tracking-widest text-cyan-400 uppercase flex items-center gap-1.5">
-                      <IconScan className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <h3 className="font-display font-extrabold text-sm tracking-widest text-brand-blue uppercase flex items-center gap-1.5">
+                      <IconScan className="w-4 h-4 text-brand-blue shrink-0" />
                       <span>Barcode Scanner Simulator</span>
                     </h3>
-                    <p className="text-[10px] text-slate-400 mt-1 font-medium font-sans">Mendekatkan barcode tiket ke viewfinder kamera...</p>
+                    <p className="text-[10px] text-slate-500 mt-1 font-medium font-sans">Mendekatkan barcode tiket ke viewfinder kamera...</p>
                   </div>
                   <button 
                     onClick={() => setIsScannerOpen(false)}
-                    className="p-1.5 rounded-lg bg-slate-805 hover:bg-slate-800 text-slate-400 transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors cursor-pointer"
                   >
                     <IconX className="w-4 h-4" />
                   </button>
@@ -1298,14 +1298,14 @@ Anda pada layanan resmi HSR Technology!
 
                 {/* Subtext and interactive simulation control */}
                 <div className="mt-5 space-y-3">
-                  <div className="p-3 bg-slate-950 border border-slate-800 rounded-2xl flex items-center gap-3">
-                    <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping shrink-0" />
-                    <span className="text-[10px] text-slate-400 font-medium font-sans">
+                  <div className="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center gap-3">
+                    <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-ping shrink-0" />
+                    <span className="text-[10px] text-slate-600 font-medium font-sans">
                       Web Audio API diaktifkan: Membunyikan nada penganalisis "BEEP" ketika barcode valid terserap lensa pemindai.
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-slate-400 text-center font-sans font-medium">
+                  <p className="text-[11px] text-slate-500 text-center font-sans font-medium">
                     Tidak memiliki barcode fisik untuk discan? Anda bisa membiarkan simulator mencari kode demonstrasi secara acak dalam waktu 2 detik!
                   </p>
                 </div>
@@ -1323,17 +1323,17 @@ Anda pada layanan resmi HSR Technology!
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsLogModalOpen(false)}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4"
+              className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
             >
               <motion.div
                 initial={{ scale: 0.95, y: 15 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.95, y: 15 }}
                 onClick={(e) => e.stopPropagation()}
-                className="max-w-2xl w-full bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-6 relative shadow-2xl flex flex-col max-h-[85vh]"
+                className="max-w-2xl w-full bg-white border border-slate-200 text-slate-800 rounded-3xl p-6 relative shadow-2xl flex flex-col max-h-[85vh]"
               >
                 {/* Header */}
-                <div className="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
+                <div className="flex justify-between items-start border-b border-slate-100 pb-4 mb-4">
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shrink-0" />
@@ -1344,17 +1344,17 @@ Anda pada layanan resmi HSR Technology!
                       </h3>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 mt-1.5">
-                      <span className="text-[9px] uppercase font-bold text-emerald-400 bg-emerald-950/40 px-2.5 py-0.5 rounded border border-emerald-800/30 font-mono">
+                      <span className="text-[9px] uppercase font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200 font-mono">
                         Tiket: {activeTicket.id}
                       </span>
-                      <span className="text-[10px] text-slate-450 font-mono font-medium">
+                      <span className="text-[10px] text-slate-500 font-mono font-medium">
                         Device: {activeTicket.diagnostic.device}
                       </span>
                     </div>
                   </div>
                   <button
                     onClick={() => setIsLogModalOpen(false)}
-                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-705 text-slate-400 hover:text-white transition-colors cursor-pointer"
+                    className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 transition-colors cursor-pointer"
                   >
                     <IconX className="w-4 h-4" />
                   </button>
@@ -1363,18 +1363,18 @@ Anda pada layanan resmi HSR Technology!
                 {/* Search Bar for Log Filtering */}
                 <div className="mb-4">
                   <div className="relative">
-                    <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-550" />
+                    <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
                       type="text"
                       placeholder="Cari log atau keyword event (misal: 'SSD', 'thermal', 'diagnosis', dll)..."
-                      className="w-full bg-slate-950 text-xs text-slate-200 pl-10 pr-12 py-2.5 rounded-xl border border-slate-800 focus:outline-none focus:border-cyan-500 transition-colors font-mono font-medium"
+                      className="w-full bg-slate-50 text-slate-850 text-xs pl-10 pr-12 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-blue-550/10 transition-colors font-mono font-medium"
                       value={logSearchQuery}
                       onChange={(e) => setLogSearchQuery(e.target.value)}
                     />
                     {logSearchQuery && (
                       <button 
                         onClick={() => setLogSearchQuery('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-300 cursor-pointer text-[10px] uppercase font-bold bg-slate-900 border border-slate-800"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded text-slate-500 hover:text-slate-800 cursor-pointer text-[10px] uppercase font-bold bg-white border border-slate-200 shadow-sm"
                       >
                         Batal
                       </button>
@@ -1383,7 +1383,7 @@ Anda pada layanan resmi HSR Technology!
                 </div>
 
                 {/* Scrollable logs area */}
-                <div className="bg-slate-950 font-mono text-xs text-slate-300 rounded-2xl p-4 overflow-y-auto flex-1 min-h-[250px] border border-slate-900 space-y-3">
+                <div className="bg-slate-50 font-mono text-xs text-slate-700 rounded-2xl p-4 overflow-y-auto flex-1 min-h-[250px] border border-slate-200 space-y-3">
                   {activeTicket.logs.filter(log => 
                     log.text.toLowerCase().includes(logSearchQuery.toLowerCase()) || 
                     log.time.toLowerCase().includes(logSearchQuery.toLowerCase())
@@ -1396,13 +1396,13 @@ Anda pada layanan resmi HSR Technology!
                       log.text.toLowerCase().includes(logSearchQuery.toLowerCase()) || 
                       log.time.toLowerCase().includes(logSearchQuery.toLowerCase())
                     ).map((log, i) => (
-                      <div key={i} className="flex gap-2 border-b border-slate-900/40 pb-2 last:border-0 last:pb-0">
-                        <span className="text-slate-500 shrink-0 select-none font-bold">[{log.time}]</span>
+                      <div key={i} className="flex gap-2 border-b border-slate-200/40 pb-2 last:border-0 last:pb-0">
+                        <span className="text-slate-400 shrink-0 select-none font-bold">[{log.time}]</span>
                         <span className={`
-                          ${log.category === 'warning' ? 'text-amber-400 font-bold' : ''}
-                          ${log.category === 'success' ? 'text-emerald-400 font-bold' : ''}
-                          ${log.category === 'info' ? 'text-cyan-300' : ''}
-                          text-slate-300 leading-relaxed
+                          ${log.category === 'warning' ? 'text-amber-600 font-bold' : ''}
+                          ${log.category === 'success' ? 'text-emerald-600 font-bold' : ''}
+                          ${log.category === 'info' ? 'text-blue-600' : ''}
+                          text-slate-750 leading-relaxed
                         `}>
                           {log.text}
                         </span>
@@ -1412,8 +1412,8 @@ Anda pada layanan resmi HSR Technology!
                 </div>
 
                 {/* Footer Controls */}
-                <div className="pt-4 border-t border-slate-800 mt-4 flex items-center justify-between flex-wrap gap-3">
-                  <div className="flex items-center gap-2 text-[10px] text-slate-500 font-mono">
+                <div className="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between flex-wrap gap-3">
+                  <div className="flex items-center gap-2 text-[10px] text-slate-550 font-mono">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span>SYNCHRONIZED WITH OFF-CHAIN BACKEND LOGS v1.02</span>
                   </div>
@@ -1426,9 +1426,9 @@ Anda pada layanan resmi HSR Technology!
                       link.download = `Logs_HSR_${activeTicket.id}.txt`;
                       link.click();
                     }}
-                    className="py-1.5 px-3 bg-slate-850 hover:bg-slate-750 text-white text-[11px] font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-800"
+                    className="py-1.5 px-3 bg-slate-50 hover:bg-slate-100 text-slate-700 text-[11px] font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer border border-slate-200 shadow-sm"
                   >
-                    <IconDownload className="w-3.5 h-3.5 text-cyan-400" />
+                    <IconDownload className="w-3.5 h-3.5 text-blue-600" />
                     <span>Download Log Lengkap (.txt)</span>
                   </button>
                 </div>
