@@ -17,6 +17,8 @@ import { Reservation as ReservationType } from '../types';
 import Logo from './Logo';
 import { useLegalDrawer } from '../context/LegalDrawerContext';
 import logoImg from '../assets/logo.png';
+import googleIcon from '../assets/google-icon.svg';
+import { z } from 'zod';
 
 interface LoginProps {
   onLoginSuccess: (role: 'admin' | 'teknisi') => void;
@@ -25,6 +27,16 @@ interface LoginProps {
   onLogout: () => void;
 }
 
+// Validation schema using Zod
+const loginSchema = z.object({
+  username: z
+    .string()
+    .min(1, { message: 'Email atau username wajib diisi.' }),
+  password: z
+    .string()
+    .min(3, { message: 'Kata sandi minimal berisi 3 karakter.' }),
+});
+
 export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogout }: LoginProps) {
   const { openTerms, openPrivacy } = useLegalDrawer();
   // Login Panel State
@@ -32,6 +44,7 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{ username?: string; password?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
 
   // Dashboard Workspace State
@@ -95,9 +108,18 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
   const handleFormLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    
-    if (!username.trim() || !password.trim()) {
-      setErrorMsg('Email dan password wajib diisi.');
+    setFieldErrors({});
+
+    const result = loginSchema.safeParse({ username, password });
+    if (!result.success) {
+      const errors: { username?: string; password?: string } = {};
+      result.error.issues.forEach((issue) => {
+        const path = issue.path[0] as 'username' | 'password';
+        if (path) {
+          errors[path] = issue.message;
+        }
+      });
+      setFieldErrors(errors);
       return;
     }
 
@@ -1464,19 +1486,32 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
       </div>
 
       {/* RIGHT CONTAINER COL: Form area (48% width) */}
-      <div className="w-full lg:w-[50%] flex flex-col justify-between px-6 py-10 md:px-12 lg:px-16 xl:px-24 bg-white relative">
+      <div className="w-full lg:w-[50%] flex flex-col justify-between px-6 py-10 md:px-12 lg:px-16 xl:px-24 bg-white relative overflow-hidden">
         
         {/* Central Registration Panel */}
-        <div className="my-auto max-w-sm w-full mx-auto py-8">
+        <div className="mt-16 mb-auto max-w-sm w-full mx-auto py-8">
           
           {/* Logo brand */}
-          <div className="flex justify-start mb-8">
-            <img 
-              src={logoImg} 
-              alt="HSR Logo" 
-              className="h-16 w-auto object-contain" 
-              referrerPolicy="no-referrer" 
-            />
+          <div className="flex justify-start mb-6 relative">
+            {/* Ambient blurs directly behind and to the left of the logo, layered with rich warm and cool dual-tone hues */}
+            <div className="absolute -top-24 -left-16 w-52 h-52 bg-rose-400/15 rounded-full blur-3xl pointer-events-none z-0" />
+            <div className="absolute -top-16 -left-28 w-64 h-64 bg-[#1570EF]/15 rounded-full blur-3xl pointer-events-none z-0" />
+            <div className="absolute -top-10 -left-16 w-48 h-48 bg-violet-400/15 rounded-full blur-3xl pointer-events-none z-0" />
+            <div className="absolute -bottom-8 -left-20 w-44 h-44 bg-amber-200/15 rounded-full blur-2xl pointer-events-none z-0" />
+
+            <button
+              type="button"
+              onClick={onNavigateHome}
+              className="group flex focus:outline-none cursor-pointer transition-transform duration-200 active:scale-95 z-10 relative"
+              title="Kembali ke Beranda"
+            >
+              <img 
+                src={logoImg} 
+                alt="HSR Logo" 
+                className="h-16 w-auto object-contain select-none" 
+                referrerPolicy="no-referrer" 
+              />
+            </button>
           </div>
 
           {/* Header block */}
@@ -1494,11 +1529,14 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-[#F9FAFB] text-[#344054] border border-[#D0D5DD] font-semibold py-2.5 px-4 rounded-lg text-xs shadow-xs hover:shadow-2xs transition-all cursor-pointer select-none font-sans"
+              className="w-full h-10 flex items-center justify-center gap-2 bg-white hover:bg-[#F9FAFB] text-[#344054] border border-[#D0D5DD] font-semibold px-4 rounded-lg text-xs shadow-xs hover:shadow-2xs transition-all cursor-pointer select-none font-sans"
             >
-              <svg className="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24">
-                <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.859-3.578-7.859-8s3.53-8 7.859-8c2.46 0 4.105 1.025 5.047 1.926l3.245-3.123C18.25 1.91 15.45 1 12.24 1 5.485 1 0 6.485 0 13.24s5.485 12.24 12.24 12.24c6.1 0 11.144-4.29 11.144-11.24 0-.756-.08-1.332-.18-1.956H12.24z"/>
-              </svg>
+              <img 
+                src={googleIcon} 
+                alt="Google Icon" 
+                className="w-4.5 h-4.5 shrink-0 object-contain" 
+                referrerPolicy="no-referrer" 
+              />
               <span>Masuk dengan Google</span>
             </button>
 
@@ -1534,12 +1572,33 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
               <input
                 id="email-input"
                 type="text"
-                placeholder="Masukkan email atau username contoh: admin@hsr.com"
-                required
+                placeholder="Email atau username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full border border-[#D0D5DD] px-3.5 py-2.5 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-4 focus:ring-blue-50/50 focus:border-[#1570ef] shadow-xs transition-all bg-white font-sans"
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  if (fieldErrors.username) {
+                    setFieldErrors(prev => ({ ...prev, username: undefined }));
+                  }
+                }}
+                className={`w-full h-10 border px-3.5 text-sm rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-4 transition-all bg-white font-sans ${
+                  fieldErrors.username 
+                    ? 'border-rose-400 focus:ring-rose-500/10 focus:border-rose-400' 
+                    : 'border-[#D0D5DD] focus:ring-blue-50/50 focus:border-[#1570ef] shadow-xs'
+                }`}
               />
+              <AnimatePresence>
+                {fieldErrors.username && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-rose-600 text-xs mt-1.5 font-normal font-sans"
+                  >
+                    <span>{fieldErrors.username}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Field 2: Password with Show/Hide Toggle */}
@@ -1557,11 +1616,19 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                 <input
                   id="password-input"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Masukkan kata sandi Anda"
-                  required
+                  placeholder="Kata sandi"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border border-[#D0D5DD] pl-3.5 pr-10 py-2.5 text-xs rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-4 focus:ring-blue-50/50 focus:border-[#1570ef] shadow-xs transition-all bg-white font-sans"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (fieldErrors.password) {
+                      setFieldErrors(prev => ({ ...prev, password: undefined }));
+                    }
+                  }}
+                  className={`w-full h-10 border pl-3.5 pr-10 text-sm rounded-lg text-slate-900 placeholder-[#98A2B3] focus:outline-none focus:ring-4 transition-all bg-white font-sans ${
+                    fieldErrors.password 
+                      ? 'border-rose-400 focus:ring-rose-500/10 focus:border-rose-400' 
+                      : 'border-[#D0D5DD] focus:ring-blue-50/50 focus:border-[#1570ef] shadow-xs'
+                  }`}
                 />
                 <button
                   type="button"
@@ -1576,13 +1643,26 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                   )}
                 </button>
               </div>
+              <AnimatePresence>
+                {fieldErrors.password && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-rose-600 text-xs mt-1.5 font-normal font-sans"
+                  >
+                    <span>{fieldErrors.password}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Register Action Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-[#1570EF] hover:bg-[#175CD3] active:bg-[#155EEF] text-white font-semibold py-2.5 px-4 rounded-lg text-xs shadow-sm hover:shadow-md transition-all duration-200 text-center flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none mt-6 font-sans"
+              className="w-full h-10 bg-[#1570EF] hover:bg-[#175CD3] active:bg-[#155EEF] border border-transparent text-white font-semibold px-4 rounded-lg text-xs shadow-sm hover:shadow-md transition-all duration-200 text-center flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 select-none mt-6 font-sans"
             >
               {isLoading ? (
                 <>
