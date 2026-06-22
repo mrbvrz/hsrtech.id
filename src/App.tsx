@@ -38,9 +38,53 @@ export default function App() {
     };
   }, []);
 
-  // Use native scroll behaviors to maintain total compatibility with sticky glass headers and navigation
+  // Initialize Locomotive Scroll v5 for premium smooth scrolling
   useEffect(() => {
-    // Scroll behavior is handled natively via CSS (scroll-behavior: smooth)
+    let locomotiveScrollInstance: any;
+
+    const initScroll = async () => {
+      try {
+        const LocomotiveScrollModule = await import('locomotive-scroll');
+        const LocomotiveScroll = LocomotiveScrollModule.default;
+
+        // Disable browser's standard scrollBehavior smooth to prevent conflict with Locomotive scroll engine
+        document.documentElement.style.scrollBehavior = 'auto';
+
+        locomotiveScrollInstance = new LocomotiveScroll({
+          lenisOptions: {
+            smoothWheel: true,
+            duration: 1.2,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            touchMultiplier: 1.5,
+          }
+        });
+
+        // Trigger updates once DOM has finished rendering completely
+        const resizeTimeout = setTimeout(() => {
+          if (locomotiveScrollInstance) {
+            window.dispatchEvent(new Event('resize'));
+          }
+        }, 150);
+
+        return () => clearTimeout(resizeTimeout);
+      } catch (error) {
+        console.error('Failed to initialize Locomotive Scroll:', error);
+      }
+    };
+
+    initScroll();
+
+    return () => {
+      if (locomotiveScrollInstance) {
+        try {
+          locomotiveScrollInstance.destroy();
+        } catch (err) {
+          console.warn('Error destroying Locomotive Scroll:', err);
+        }
+      }
+      // Restore standard native smooth navigation transitions on cleanup
+      document.documentElement.style.scrollBehavior = 'smooth';
+    };
   }, [currentView]);
 
   // Restore logged in user role from localStorage

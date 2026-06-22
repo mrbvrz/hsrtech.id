@@ -92,7 +92,7 @@ export default function Navbar({ currentView, onNavigate, activeSection, userRol
         id="main-header"
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           (isScrolled || currentView !== 'home') 
-            ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-100 py-3.5' 
+            ? 'glass-nav-scrolled py-3.5' 
             : 'bg-transparent border-b border-transparent py-5'
         }`}
       >
