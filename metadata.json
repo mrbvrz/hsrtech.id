@@ -1,0 +1,6 @@
+{
+  "name": "HSR Technology",
+  "description": "Website profil perusahaan HSR Technology - Jasa Servis Komputer, CCTV, Jaringan, Website, dan Solusi IT Professional dengan Fitur Reservasi Online dan Portofolio",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

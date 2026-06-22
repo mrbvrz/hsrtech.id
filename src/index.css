@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Geist+Mono:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Schibsted Grotesk", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Schibsted Grotesk", "Plus Jakarta Sans", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --color-brand-dark: #0e1b2f;
+  --color-brand-blue: #2563eb;
+  --color-brand-light-blue: #60a5fa;
+  --color-bg-light: #f8fafc;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-brand-dark);
+    background-color: #ffffff;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom background grid effects for tech/consulting vibe */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(14, 27, 47, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 27, 47, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.grid-bg-dark {
+  background-image: 
+    linear-gradient(rgba(96, 165, 250, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Custom hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glassmorphism scroll effects */
+.glass-nav {
+  background-color: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(14, 27, 47, 0.04);
+}
+
+.glass-nav-scrolled {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 10px 30px -10px rgba(14, 27, 47, 0.05);
+  border-bottom: 1px solid rgba(14, 27, 47, 0.05);
+}
+
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(14, 27, 47, 0.05);
+}
+
+.glass-card-dark {
+  background-color: rgba(14, 27, 47, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.3;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s infinite ease-in-out;
+}
+
+/* Infinite Marquee Animations for Testimonial Rows */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 95s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 95s linear infinite;
+}
+
+.animate-marquee-slow {
+  animation: marquee 115s linear infinite;
+}
+
+.animate-marquee-reverse-slow {
+  animation: marquee-reverse 115s linear infinite;
+}
+
+/* Infinite Vertical Marquee Animation */
+@keyframes marquee-up {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+.animate-marquee-up {
+  animation: marquee-up 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-up:hover {
+  animation-play-state: paused !important;
+}
+
+.animate-marquee-up-slow {
+  animation: marquee-up 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-up-slow:hover {
+  animation-play-state: paused !important;
+}
+
+
