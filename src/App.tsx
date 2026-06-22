@@ -38,34 +38,9 @@ export default function App() {
     };
   }, []);
 
-  // Initialize Locomotive Scroll for Landing Page (home view)
+  // Use native scroll behaviors to maintain total compatibility with sticky glass headers and navigation
   useEffect(() => {
-    let locomotiveScrollInstance: any;
-
-    if (currentView === 'home') {
-      const initScroll = async () => {
-        try {
-          const LocomotiveScroll = (await import('locomotive-scroll')).default;
-          locomotiveScrollInstance = new LocomotiveScroll();
-        } catch (error) {
-          console.error('Failed to initialize Locomotive Scroll:', error);
-        }
-      };
-
-      // Slight timeout to ensure layout has mounted
-      const timer = setTimeout(initScroll, 50);
-
-      return () => {
-        clearTimeout(timer);
-        if (locomotiveScrollInstance) {
-          try {
-            locomotiveScrollInstance.destroy();
-          } catch (err) {
-            console.warn('Error destroying Locomotive Scroll:', err);
-          }
-        }
-      };
-    }
+    // Scroll behavior is handled natively via CSS (scroll-behavior: smooth)
   }, [currentView]);
 
   // Restore logged in user role from localStorage

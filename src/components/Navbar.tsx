@@ -91,7 +91,9 @@ export default function Navbar({ currentView, onNavigate, activeSection, userRol
       <header 
         id="main-header"
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'glass-nav-scrolled py-3.5' : 'bg-transparent border-b border-transparent py-5'
+          (isScrolled || currentView !== 'home') 
+            ? 'bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-100 py-3.5' 
+            : 'bg-transparent border-b border-transparent py-5'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -327,7 +329,7 @@ export default function Navbar({ currentView, onNavigate, activeSection, userRol
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="md:hidden glass-nav shadow-lg border-b border-slate-100 overflow-hidden absolute top-full left-0 right-0 font-sans"
+              className="md:hidden bg-white/95 backdrop-blur-lg shadow-lg border-b border-slate-100 overflow-hidden absolute top-full left-0 right-0 font-sans"
             >
               <div className="px-4 pt-3 pb-6 space-y-2.5 max-h-[80vh] overflow-y-auto">
                 
