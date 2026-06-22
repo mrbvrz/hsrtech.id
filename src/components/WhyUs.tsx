@@ -86,7 +86,7 @@ const getTestimonialRating = (id: string): number => {
 
 const renderStars = (rating: number) => {
   const activeStyle = getRatingColorStyle(rating);
-  const stars = [];
+  const stars: React.ReactNode[] = [];
   for (let i = 1; i <= 5; i++) {
     if (rating >= i) {
       stars.push(
