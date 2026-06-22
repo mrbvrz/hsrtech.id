@@ -142,6 +142,32 @@ function RootComponent() {
   }, []);
 
   // Centralized navigation helper to map old views into TanStack paths
+  const getPathFromView = (view: ViewType): string => {
+    switch (view) {
+      case 'home': return '/';
+      case 'login': return '/login';
+      case 'blog': return '/blog';
+      case 'about': return '/tentang-kami';
+      case 'booking': return '/reservasi';
+      case 'tracking': return '/lacak-servis';
+      case 'marketplace': return '/marketplace';
+      case 'portfolio': return '/portfolio';
+      default: return '/';
+    }
+  };
+
+  const getViewFromPath = (path: string): ViewType => {
+    if (path === '/') return 'home';
+    if (path === '/login') return 'login';
+    if (path === '/blog') return 'blog';
+    if (path === '/tentang-kami') return 'about';
+    if (path === '/reservasi') return 'booking';
+    if (path === '/lacak-servis') return 'tracking';
+    if (path === '/marketplace') return 'marketplace';
+    if (path === '/portfolio') return 'portfolio';
+    return 'home';
+  };
+
   const handleNavigate = (view: ViewType, sectionId?: string) => {
     if (view === 'home') {
       navigate({ to: '/' });
@@ -156,7 +182,7 @@ function RootComponent() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     } else {
-      navigate({ to: `/${view}` });
+      navigate({ to: getPathFromView(view) });
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
   };
@@ -212,7 +238,7 @@ function RootComponent() {
         if (href === '#booking') {
           e.preventDefault();
           handleNavigate('booking');
-        } else if (href && href.startsWith('#') && currentPath === '/booking') {
+        } else if (href && href.startsWith('#') && currentPath === '/reservasi') {
           e.preventDefault();
           handleNavigate('home', href.substring(1));
         }
@@ -239,7 +265,7 @@ function RootComponent() {
         {/* Sticky Navbar (with computed active tab paths) */}
         {!isLoginPath && (
           <Navbar 
-            currentView={currentPath === '/' ? 'home' : currentPath.substring(1) as any} 
+            currentView={getViewFromPath(currentPath)} 
             onNavigate={handleNavigate} 
             activeSection={activeSection} 
             userRole={userRole}
@@ -379,7 +405,7 @@ const portfolioRoute = createRoute({
 
 const bookingRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/booking',
+  path: '/reservasi',
   component: function BookingView() {
     const { handleNavigate } = useRouteContext();
     return (
@@ -409,7 +435,7 @@ const blogRoute = createRoute({
 
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/about',
+  path: '/tentang-kami',
   component: function AboutView() {
     return <About />;
   }
@@ -417,7 +443,7 @@ const aboutRoute = createRoute({
 
 const trackingRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/tracking',
+  path: '/lacak-servis',
   component: function TrackingView() {
     return <Tracking />;
   }
