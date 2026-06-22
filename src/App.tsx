@@ -19,18 +19,23 @@ import About from './components/About';
 import Tracking from './components/Tracking';
 import Marketplace from './components/Marketplace';
 import { LegalDrawerProvider } from './context/LegalDrawerContext';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<'home' | 'booking' | 'login' | 'blog' | 'about' | 'tracking' | 'marketplace' | 'portfolio'>('home');
   const [activeSection, setActiveSection] = useState('home');
   const [userRole, setUserRole] = useState<'admin' | 'teknisi' | null>(null);
   const [isAtTop, setIsAtTop] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isWaHovered, setIsWaHovered] = useState(false);
 
-  // Monitor scroll height for floating WhatsApp text expand/collapse
+  // Monitor scroll height for floating WhatsApp text expand/collapse and backdrop-filter scrolled style
   useEffect(() => {
     const handleScroll = () => {
-      setIsAtTop(window.scrollY < 60);
+      const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      setIsAtTop(scrollPos < 60);
+      setIsScrolled(scrollPos > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
@@ -56,6 +61,11 @@ export default function App() {
             duration: 1.2,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             touchMultiplier: 1.5,
+          },
+          scrollCallback: (args: any) => {
+            const scrollY = args.scroll || 0;
+            setIsAtTop(scrollY < 60);
+            setIsScrolled(scrollY > 20);
           }
         });
 
@@ -198,6 +208,7 @@ export default function App() {
             activeSection={activeSection} 
             userRole={userRole}
             onLogout={handleLogout}
+            isScrolledProp={isScrolled}
           />
         )}
 
@@ -390,6 +401,10 @@ export default function App() {
             </motion.a>
           </motion.div>
         )}
+
+        {/* Vercel Web Analytics & Performance Core Tools */}
+        <SpeedInsights />
+        <Analytics />
 
       </div>
     </LegalDrawerProvider>

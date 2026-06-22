@@ -23,10 +23,19 @@ interface NavbarProps {
   activeSection: string;
   userRole?: 'admin' | 'teknisi' | null;
   onLogout?: () => void;
+  isScrolledProp?: boolean;
 }
 
-export default function Navbar({ currentView, onNavigate, activeSection, userRole, onLogout }: NavbarProps) {
-  const [isScrolled, setIsScrolled] = useState(false);
+export default function Navbar({ 
+  currentView, 
+  onNavigate, 
+  activeSection, 
+  userRole, 
+  onLogout,
+  isScrolledProp
+}: NavbarProps) {
+  const [localIsScrolled, setLocalIsScrolled] = useState(false);
+  const isScrolled = isScrolledProp !== undefined ? isScrolledProp : localIsScrolled;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // Custom states for the submenus & toast
@@ -36,10 +45,11 @@ export default function Navbar({ currentView, onNavigate, activeSection, userRol
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
+      const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      if (scrollPos > 20) {
+        setLocalIsScrolled(true);
       } else {
-        setIsScrolled(false);
+        setLocalIsScrolled(false);
       }
     };
     window.addEventListener('scroll', handleScroll);
