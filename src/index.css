@@ -57,11 +57,11 @@
 }
 
 .glass-nav-scrolled {
-  background-color: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 10px 30px -10px rgba(14, 27, 47, 0.05);
-  border-bottom: 1px solid rgba(14, 27, 47, 0.05);
+  background-color: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255, 255, 255, 0.5) !important;
+  border-bottom: 1px solid rgba(14, 27, 47, 0.06) !important;
 }
 
 .glass-card {
