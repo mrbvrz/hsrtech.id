@@ -5,10 +5,8 @@
 
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-// Path to logo image. We refer to it by a string path so that if the file does not exist,
-// the build does not fail. At runtime, the browser will attempt to load the image,
-// and if it fails (404), the onError handler will gracefully fall back to our styled vector logo.
-const logoImg = '/src/assets/logo.png';
+import logoImg from '../assets/logo.png';
+
 
 interface LogoProps {
   className?: string;

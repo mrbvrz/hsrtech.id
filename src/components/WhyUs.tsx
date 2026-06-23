@@ -14,6 +14,7 @@ import {
 } from '@tabler/icons-react';
 import { TESTIMONIALS, PROCESS_STEPS } from '../data';
 import figureImg from '../assets/figure.png';
+import servicesImg from '../assets/services.webp';
 import CtaSection from './CtaSection';
 
 // Helper components for the premium Testimonials layout
@@ -571,7 +572,7 @@ export default function WhyUs() {
             {/* Background Image & Light Overlay */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-slate-50">
               <img 
-                src="/services.webp" 
+                src={servicesImg} 
                 alt="Services Background" 
                 className="w-full h-full object-cover opacity-[0.22]"
                 referrerPolicy="no-referrer"
