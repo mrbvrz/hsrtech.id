@@ -542,14 +542,13 @@ export default function WhyUs() {
         </div>
 
         {/* Middle section: Work flow/Process */}
-        <div className="[perspective:1000px] mb-28 relative">
+        <div className="[perspective:1000px] mb-28 relative text-left">
           {/* Subtle background glow/blob for a softer look */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl rounded-full bg-blue-500/5 blur-[100px] pointer-events-none z-0" />
 
           <motion.div 
             className="w-full rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-xl z-10 transition-colors duration-200"
             style={{
-              backgroundColor: isProcessHovered ? "rgba(255, 255, 255, 0.98)" : "rgba(248, 250, 252, 0.98)", // off-white with transparency
               borderColor: isProcessHovered ? "rgba(37, 99, 235, 0.2)" : "rgba(226, 232, 240, 0.8)",
               borderWidth: "1px",
               borderStyle: "solid",
@@ -569,6 +568,17 @@ export default function WhyUs() {
             }}
             transition={{ type: 'spring', stiffness: 70, damping: 20 }}
           >
+            {/* Background Image & Light Overlay */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-slate-50">
+              <img 
+                src="/services.webp" 
+                alt="Services Background" 
+                className="w-full h-full object-cover opacity-[0.22]"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-bl from-white/20 via-white/70 to-white/98" />
+            </div>
+
             {/* Dynamic light reflection spotlight for the shine */}
             <div 
               className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-300 z-30"
@@ -577,27 +587,25 @@ export default function WhyUs() {
                 background: `radial-gradient(circle 400px at ${processGlowPos.x}% ${processGlowPos.y}%, rgba(37, 99, 235, 0.08), transparent 70%)`,
               }}
             />
-
-            <div className="absolute inset-0 grid-bg opacity-[0.6] pointer-events-none" />
             
-            <div className="max-w-xl mb-12 relative z-10 pointer-events-none">
-              <span className="text-xs font-bold uppercase tracking-widest text-brand-blue mb-2 inline-flex items-center gap-1.5 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">
+            <div className="max-w-xl mb-12 relative z-10">
+              <span className="text-xs font-bold uppercase tracking-widest text-brand-blue mb-2 inline-flex items-center gap-1.5 bg-blue-500/15 px-3 py-1 rounded-full border border-blue-500/20">
                 <IconSparkles className="w-3.5 h-3.5" /> Metodologi Kerja
               </span>
               <h3 className="text-2xl sm:text-3xl font-display font-semibold tracking-tight mt-2 text-brand-dark">4 Langkah Alur Kerja Sistematis HSR</h3>
               <p className="text-slate-600 text-sm mt-3 leading-relaxed">Kami memastikan setiap tindakan teknis berjalan dengan kepastian hasil dan perlindungan keamanan maksimal bagi aset Anda.</p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10 pointer-events-none">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
               {PROCESS_STEPS.map((step, idx) => {
                 const isActive = activeStep === idx;
                 return (
                   <div key={idx} className="flex flex-col space-y-3 relative group transition-all duration-500">
-                    <div className={`h-[2px] absolute top-4 left-10 right-0 hidden lg:block transition-colors duration-500 ${isActive ? 'bg-indigo-600/80 shadow-[0_0_8px_rgba(37,99,235,0.3)]' : 'bg-slate-200 group-hover:bg-brand-blue/30'}`} />
+                    <div className={`h-[2px] absolute top-4 left-10 right-0 hidden lg:block transition-colors duration-500 ${isActive ? 'bg-blue-600/80 shadow-[0_0_8px_rgba(37,99,235,0.3)]' : 'bg-slate-200 group-hover:bg-brand-blue/30'}`} />
                     
-                    <span className={`text-2xl font-extrabold font-display text-transparent bg-clip-text bg-gradient-to-br block transition-all duration-500 ${isActive ? 'from-indigo-600 to-blue-600 drop-shadow-[0_0_8px_rgba(99,102,241,0.2)] scale-110 origin-left' : 'from-slate-550 to-slate-400'}`}>{step.title.split('.')[0]}</span>
+                    <span className={`text-2xl font-extrabold font-display text-transparent bg-clip-text bg-gradient-to-br block transition-all duration-500 ${isActive ? 'from-blue-600 to-cyan-500 drop-shadow-[0_0_8px_rgba(37,99,235,0.2)] scale-110 origin-left' : 'from-slate-550 to-slate-400'}`}>{step.title.split('.')[0]}</span>
                     
-                    <h4 className={`font-display font-bold text-base transition-colors duration-500 ${isActive ? 'text-indigo-950 font-extrabold' : 'text-slate-800'}`}>{step.title.split('. ')[1]}</h4>
+                    <h4 className={`font-display font-bold text-base transition-colors duration-500 ${isActive ? 'text-blue-950 font-extrabold' : 'text-slate-800'}`}>{step.title.split('. ')[1]}</h4>
                     
                     <p className={`text-xs sm:text-sm leading-relaxed transition-colors duration-500 ${isActive ? 'text-slate-700 font-medium' : 'text-slate-500'}`}>{step.description}</p>
                   </div>
