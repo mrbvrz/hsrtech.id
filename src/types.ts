@@ -55,4 +55,12 @@ export interface Reservation {
   notes: string;
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
   createdAt: string;
+  paymentStatus?: 'lunas' | 'belum_bayar' | 'dp_50%' | 'menunggu_verifikasi';
+  paymentProof?: {
+    method: string;
+    senderName: string;
+    amount: number;
+    receiptImage?: string;
+    uploadedAt: string;
+  };
 }

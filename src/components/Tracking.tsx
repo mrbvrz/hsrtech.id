@@ -10,7 +10,7 @@ import {
   IconFileText, IconChevronRight, IconCheck, IconClock, IconMessage2, 
   IconRefresh, IconArrowLeft, IconMapPin, IconDownload, IconX, IconInfoCircle, 
   IconSend, IconActivity, IconTools, IconShieldCheck, IconReceipt, IconStar,
-  IconArrowsMaximize
+  IconArrowsMaximize, IconCopy, IconQrcode, IconUpload, IconCreditCard, IconDiscountCheck
 } from '@tabler/icons-react';
 import { SERVICES } from '../data';
 import { Reservation as ReservationType } from '../types';
@@ -42,7 +42,14 @@ interface DemoTicket {
   };
   spareparts: { name: string; price: number }[];
   basePrice: number;
-  paymentStatus: 'lunas' | 'belum_bayar' | 'dp_50%';
+  paymentStatus: 'lunas' | 'belum_bayar' | 'dp_50%' | 'menunggu_verifikasi';
+  paymentProof?: {
+    method: string;
+    senderName: string;
+    amount: number;
+    receiptImage?: string;
+    uploadedAt: string;
+  };
   logs: { time: string; text: string; category?: 'info' | 'process' | 'warning' | 'success' }[];
 }
 
@@ -158,6 +165,117 @@ export default function Tracking() {
   const [userChatMsg, setUserChatMsg] = useState('');
   const [isTechTyping, setIsTechTyping] = useState(false);
 
+  // Manual Payment States
+  const [isPaymentFormOpen, setIsPaymentFormOpen] = useState(false);
+  const [selectedMethod, setSelectedMethod] = useState<'qris' | 'mandiri' | 'jago' | 'jenius' | 'bri' | null>(null);
+  const [senderName, setSenderName] = useState('');
+  const [transferAmount, setTransferAmount] = useState('');
+  const [receiptFileBase64, setReceiptFileBase64] = useState<string | null>(null);
+  const [receiptFileName, setReceiptFileName] = useState('');
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [paymentErrors, setPaymentErrors] = useState<{ senderName?: string; transferAmount?: string; receipt?: string }>({});
+
+  const handleCopyAccount = (text: string, bankName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(bankName);
+    setTimeout(() => setCopiedText(null), 2000);
+  };
+
+  const handleReceiptFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setReceiptFileName(file.name);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setReceiptFileBase64(reader.result as string);
+        if (paymentErrors.receipt) {
+          setPaymentErrors(prev => ({ ...prev, receipt: undefined }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const submitPaymentConfirmation = () => {
+    if (!activeTicket) return;
+    
+    const errors: { senderName?: string; transferAmount?: string; receipt?: string } = {};
+    if (!senderName.trim()) {
+      errors.senderName = 'Nama pengirim / pemilik rekening wajib diisi.';
+    }
+    if (!transferAmount.trim() || isNaN(Number(transferAmount)) || Number(transferAmount) <= 0) {
+      errors.transferAmount = 'Nominal transfer wajib diisi dengan angka bernilai positif.';
+    }
+    if (!receiptFileBase64) {
+      errors.receipt = 'Silakan unggah bukti transfer pembayaran Anda.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setPaymentErrors(errors);
+      return;
+    }
+
+    const payload = {
+      method: selectedMethod?.toUpperCase() || 'QRIS',
+      senderName: senderName.trim(),
+      amount: Number(transferAmount),
+      receiptImage: receiptFileBase64 || undefined,
+      uploadedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+    };
+
+    // 1. Update active ticket screen state
+    const updatedTicket: DemoTicket = {
+      ...activeTicket,
+      paymentStatus: 'menunggu_verifikasi',
+      paymentProof: payload
+    };
+    setActiveTicket(updatedTicket);
+
+    // 2. Persist to localStorage hsr_reservations
+    const savedReservationsStr = localStorage.getItem('hsr_reservations');
+    if (savedReservationsStr) {
+      try {
+        const localReservations: ReservationType[] = JSON.parse(savedReservationsStr);
+        const index = localReservations.findIndex(r => r.id === activeTicket.id);
+        if (index !== -1) {
+          localReservations[index].paymentStatus = 'menunggu_verifikasi';
+          localReservations[index].paymentProof = payload;
+          localStorage.setItem('hsr_reservations', JSON.stringify(localReservations));
+        }
+      } catch (err) {
+        console.error("Gagal menyimpan pembayaran ke local storage", err);
+      }
+    }
+
+    // 3. Persist demo ticket overrides if it was a demo ticket
+    const demoOverridesStr = localStorage.getItem('hsr_demo_overrides') || '{}';
+    try {
+      const demoOverrides = JSON.parse(demoOverridesStr);
+      demoOverrides[activeTicket.id] = {
+        paymentStatus: 'menunggu_verifikasi',
+        paymentProof: payload
+      };
+      localStorage.setItem('hsr_demo_overrides', JSON.stringify(demoOverrides));
+    } catch (e) {
+      console.error(e);
+    }
+
+    // 4. Trigger simulated live message from active technician after success upload
+    setTimeout(() => {
+      setChatMessages(prev => [
+        ...prev,
+        {
+          sender: 'technician',
+          text: `Halo pak ${activeTicket.clientName}! Kami telah menerima konfirmasi pembayaran manual Anda melalui [${payload.method}] sebesar Rp ${payload.amount.toLocaleString('id-ID')} atas nama "${payload.senderName}". Tim Keuangan HSR sedang memverifikasi laporan mutasi Anda. Status pengerjaan akan segera kami lanjutkan begitu pembayaran terverifikasi. Terima kasih!`,
+          time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    }, 1500);
+
+    // Reset Form state
+    setIsPaymentFormOpen(false);
+  };
+
   // Testimonial & Review form states
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
@@ -238,11 +356,24 @@ export default function Tracking() {
       );
 
       if (matchedDemo) {
-        setActiveTicket(matchedDemo);
+        const overridesStr = localStorage.getItem('hsr_demo_overrides');
+        let finalDemo = { ...matchedDemo };
+        if (overridesStr) {
+          try {
+            const overrides = JSON.parse(overridesStr);
+            if (overrides[queryId]) {
+              finalDemo.paymentStatus = overrides[queryId].paymentStatus;
+              finalDemo.paymentProof = overrides[queryId].paymentProof;
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        setActiveTicket(finalDemo);
         setIsSearching(false);
         // Load clean messages for diagnostic support
         setChatMessages([
-          { sender: 'technician', text: `Halo pak ${matchedDemo.clientName}, saya ${matchedDemo.technician.name} teknisi IT HSR yang menangani unit Anda. Apakah ada keluhan tambahan yang ingin ditanyakan?`, time: '13:00' }
+          { sender: 'technician', text: `Halo pak ${finalDemo.clientName}, saya ${finalDemo.technician.name} teknisi IT HSR yang menangani unit Anda. Apakah ada keluhan tambahan yang ingin ditanyakan?`, time: '13:00' }
         ]);
         return;
       }
@@ -291,7 +422,8 @@ export default function Tracking() {
                 { name: `Paket Jasa: ${matchedLocal.serviceTitle}`, price: 150000 }
               ],
               basePrice: 150000,
-              paymentStatus: 'belum_bayar',
+              paymentStatus: matchedLocal.paymentStatus || 'belum_bayar',
+              paymentProof: matchedLocal.paymentProof,
               logs: [
                 { time: matchedLocal.createdAt.split(' pukul ')[0] || 'Hari Ini', text: `Tiket Reservasi #${matchedLocal.id} berhasil diajukan online oleh klien.`, category: 'info' },
                 { time: 'Masa Antrian', text: `Status tiket saat ini: [${matchedLocal.status}]. Menunggu kedatangan teknisi pada tanggal ${matchedLocal.bookingDate} pukul ${matchedLocal.bookingTime}.`, category: 'process' }
@@ -1107,24 +1239,92 @@ Anda pada layanan resmi HSR Technology!
 
                         <div className="flex items-center justify-between text-[11px]">
                           <span className="text-slate-400 font-bold uppercase tracking-wider">Status Bayar</span>
-                          <span className={`px-2.5 py-0.5 rounded-full font-bold uppercase ${
+                          <span className={`px-2.5 py-0.5 rounded-full font-bold uppercase text-[10px] ${
                             activeTicket.paymentStatus === 'lunas' 
                               ? 'bg-emerald-100 text-emerald-700' 
                               : activeTicket.paymentStatus === 'dp_50%'
                                 ? 'bg-blue-100 text-blue-700'
-                                : 'bg-rose-100 text-rose-700'
+                                : activeTicket.paymentStatus === 'menunggu_verifikasi'
+                                  ? 'bg-amber-100 text-amber-700 animate-pulse'
+                                  : 'bg-rose-100 text-rose-700'
                           }`}>
-                            {activeTicket.paymentStatus.replace('_', ' ')}
+                            {activeTicket.paymentStatus === 'menunggu_verifikasi' ? 'menunggu verifikasi' : activeTicket.paymentStatus.replace('_', ' ')}
                           </span>
                         </div>
 
+                        {/* Submitted Payment Proof Info (If waiting for verification) */}
+                        {activeTicket.paymentStatus === 'menunggu_verifikasi' && activeTicket.paymentProof && (
+                          <div className="p-3.5 bg-amber-50/50 border border-amber-200/60 rounded-2xl text-[11px] text-slate-700 space-y-2 mt-2">
+                            <span className="font-bold text-amber-800 flex items-center gap-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
+                              Konfirmasi Terkirim
+                            </span>
+                            <p className="text-[10px] text-slate-500 leading-relaxed">
+                              Bukti transfer manual sedang dikonfirmasi oleh tim keuangan HSR. Proses estimasi memerlukan waktu sekitar 10-15 menit.
+                            </p>
+                            <div className="grid grid-cols-2 gap-x-2 gap-y-1 border-t pt-2 font-sans">
+                              <span className="text-slate-400 font-medium">Metode Transfer:</span>
+                              <span className="text-slate-800 font-bold text-right">{activeTicket.paymentProof.method}</span>
+                              <span className="text-slate-400 font-medium">Atas Nama:</span>
+                              <span className="text-slate-800 font-bold text-right truncate">{activeTicket.paymentProof.senderName}</span>
+                              <span className="text-slate-400 font-medium">Nominal:</span>
+                              <span className="text-slate-800 font-bold text-right font-mono text-xs">Rp {activeTicket.paymentProof.amount.toLocaleString('id-ID')}</span>
+                              <span className="text-slate-400 font-medium">Waktu Kirim:</span>
+                              <span className="text-slate-800 font-bold text-right truncate text-[9px]">{activeTicket.paymentProof.uploadedAt}</span>
+                            </div>
+                            {activeTicket.paymentProof.receiptImage && (
+                              <div className="pt-2">
+                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Bukti Terlampir:</span>
+                                <div className="relative group overflow-hidden rounded-lg border bg-slate-100 h-24 flex items-center justify-center">
+                                  <img 
+                                    src={activeTicket.paymentProof.receiptImage} 
+                                    className="h-full object-contain cursor-zoom-in group-hover:scale-105 transition-all" 
+                                    alt="Receipt Preview"
+                                    referrerPolicy="no-referrer"
+                                    onClick={() => {
+                                      // Optional popup
+                                      const w = window.open();
+                                      if (w && activeTicket.paymentProof?.receiptImage) {
+                                        w.document.write(`<img src="${activeTicket.paymentProof.receiptImage}" style="max-width:100%; height:auto;" />`);
+                                      }
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
                         <button
                           onClick={handlePrintInvoice}
-                          className="w-full py-2.5 bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm"
+                          className="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer border"
                         >
-                          <IconDownload className="w-4 h-4" />
+                          <IconDownload className="w-3.5 h-3.5" />
                           <span>Cetak Nota PDF</span>
                         </button>
+
+                        {/* Pay manually button */}
+                        {(activeTicket.paymentStatus === 'belum_bayar' || activeTicket.paymentStatus === 'dp_50%') && (
+                          <div className="pt-2 border-t mt-2">
+                            <button
+                              onClick={() => {
+                                setIsPaymentFormOpen(true);
+                                const targetAmount = activeTicket.paymentStatus === 'dp_50%' 
+                                  ? activeTicket.basePrice * 0.5 
+                                  : activeTicket.basePrice;
+                                setTransferAmount(targetAmount.toString());
+                                setPaymentErrors({});
+                                if (!selectedMethod) {
+                                  setSelectedMethod('qris');
+                                }
+                              }}
+                              className="w-full py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 shadow-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white"
+                            >
+                              <IconCreditCard className="w-4 h-4 text-cyan-200 animate-pulse" />
+                              <span>Bayar & Konfirmasi Sekarang</span>
+                            </button>
+                          </div>
+                        )}
                       </div>
 
                       {/* High fidelity interactive technician support live chat widget */}
@@ -1598,6 +1798,320 @@ Anda pada layanan resmi HSR Technology!
                 </div>
               </motion.div>
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Payment Confirmation Modal Overlay */}
+        <AnimatePresence>
+          {isPaymentFormOpen && activeTicket && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsPaymentFormOpen(false)}
+                className="absolute inset-0 bg-slate-900/60 backdrop-blur-xs"
+              />
+              
+              {/* Modal Card */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 15 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 15 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                className="relative bg-white w-full max-w-md rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh] z-10 text-left font-sans"
+              >
+                {/* Modal Header */}
+                <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                      <IconCreditCard className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-extrabold text-slate-900 text-sm">Pembayaran & Konfirmasi</h3>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tiket #{activeTicket.id}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setIsPaymentFormOpen(false)}
+                    className="p-1 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-650 rounded-xl text-xs font-black transition-all cursor-pointer"
+                  >
+                    Tutup
+                  </button>
+                </div>
+
+                {/* Modal Body */}
+                <div className="flex-1 overflow-y-auto p-5 space-y-5 text-slate-700 text-xs">
+                  
+                  {/* Step 1: Choosing a payment method */}
+                  <div className="space-y-2">
+                    <span className="font-extrabold text-[10px] uppercase tracking-wider text-slate-400 block">Pilih Metode Pembayaran:</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedMethod('qris')}
+                        className={`p-3.5 border rounded-2xl flex flex-col items-center gap-1.5 text-center font-bold cursor-pointer transition-all ${
+                          selectedMethod === 'qris' 
+                            ? 'border-indigo-600 bg-indigo-50/40 text-indigo-700 shadow-xs' 
+                            : 'border-slate-150 hover:bg-slate-50 text-slate-600'
+                        }`}
+                      >
+                        <IconQrcode className="w-5 h-5 text-indigo-600" />
+                        <span className="text-[10px] leading-tight block">QRIS Gopay/Dana</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedMethod('mandiri')}
+                        className={`p-3.5 border rounded-2xl flex flex-col items-center gap-1.5 text-center font-bold cursor-pointer transition-all ${
+                          selectedMethod === 'mandiri' 
+                            ? 'border-amber-500 bg-amber-50/40 text-amber-800 shadow-xs' 
+                            : 'border-slate-150 hover:bg-slate-50 text-slate-600'
+                        }`}
+                      >
+                        <IconCreditCard className="w-5 h-5 text-amber-500" />
+                        <span className="text-[10px] leading-tight block">Bank Mandiri</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedMethod('jago')}
+                        className={`p-3.5 border rounded-2xl flex flex-col items-center gap-1.5 text-center font-bold cursor-pointer transition-all ${
+                          selectedMethod === 'jago' 
+                            ? 'border-orange-500 bg-orange-50/45 text-orange-850 shadow-xs' 
+                            : 'border-slate-150 hover:bg-slate-50 text-slate-600'
+                        }`}
+                      >
+                        <IconCreditCard className="w-5 h-5 text-orange-500" />
+                        <span className="text-[10px] leading-tight block">Bank Jago</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedMethod('jenius')}
+                        className={`p-3.5 border rounded-2xl flex flex-col items-center gap-1.5 text-center font-bold cursor-pointer transition-all ${
+                          selectedMethod === 'jenius' 
+                            ? 'border-cyan-500 bg-cyan-50/40 text-cyan-800 shadow-xs' 
+                            : 'border-slate-150 hover:bg-slate-50 text-slate-600'
+                        }`}
+                      >
+                        <IconCreditCard className="w-5 h-5 text-cyan-500" />
+                        <span className="text-[10px] leading-tight block">Bank Jenius</span>
+                      </button>
+                    </div>
+                    
+                    <button
+                      type="button"
+                      className={`w-full p-3 border rounded-2xl flex items-center justify-center gap-3.5 text-center font-bold cursor-pointer transition-all ${
+                        selectedMethod === 'bri'
+                          ? 'border-blue-600 bg-blue-50/40 text-blue-800 shadow-xs'
+                          : 'border-slate-150 hover:bg-slate-50 text-slate-600'
+                      }`}
+                      onClick={() => setSelectedMethod('bri')}
+                    >
+                      <IconCreditCard className="w-5 h-5 text-blue-600" />
+                      <span className="text-[10px]">Bank Rakyat Indonesia (BRI)</span>
+                    </button>
+                  </div>
+
+                  {/* Step 2: Payment Target details */}
+                  {selectedMethod && (
+                    <div className="p-4 bg-slate-50 border rounded-2xl space-y-4">
+                      {selectedMethod === 'qris' ? (
+                        <div className="space-y-3">
+                          <p className="text-[10px] text-slate-500 font-medium text-center leading-relaxed">
+                            Pindai Kode QRIS HSR Technology di bawah menggunakan e-Wallet (Gopay, OVO, Dana, LinkAja, ShopeePay) atau Mobile Banking Anda.
+                          </p>
+                          
+                          {/* CSS-drawn high-fidelity QR */}
+                          <div className="bg-white p-3 border rounded-2xl flex flex-col items-center gap-1.5 shadow-xs w-44 mx-auto font-sans">
+                            <div className="bg-slate-100 p-2 rounded-xl relative">
+                              <div className="w-32 h-32 flex flex-wrap gap-[1px] items-center justify-center bg-white p-1">
+                                {Array.from({ length: 144 }).map((_, idx) => {
+                                  const isDark = (idx % 2 === 0 && idx % 3 !== 0) || (idx % 5 === 0) || (idx < 25) || (idx > 115 && idx % 4 === 0) || (idx % 7 === 0);
+                                  return (
+                                    <div key={idx} className={`w-[9px] h-[9px] rounded-[1px] ${isDark ? 'bg-slate-900' : 'bg-transparent'}`} />
+                                  );
+                                })}
+                                <div className="absolute inset-0 m-auto w-6 h-6 bg-indigo-900 ring-2 ring-white rounded-md flex items-center justify-center">
+                                  <span className="text-[8px] text-white font-black tracking-tight scale-90">HSR</span>
+                                </div>
+                              </div>
+                            </div>
+                            <span className="text-[9px] font-sans font-bold text-indigo-800 tracking-widest uppercase">QRIS HSR REPAIR</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-3 font-sans text-left">
+                          <div className="flex justify-between items-start gap-2">
+                            <div>
+                              <span className="text-[9px] font-bold text-slate-400 block uppercase tracking-wider">
+                                {selectedMethod === 'mandiri' ? 'BANK MANDIRI' :
+                                 selectedMethod === 'jago' ? 'BANK JAGO' :
+                                 selectedMethod === 'jenius' ? 'BANK JENIUS (BTPN)' : 'BANK BRI'}
+                              </span>
+                              <span className="font-mono font-bold text-slate-850 text-sm tracking-wide">
+                                {selectedMethod === 'mandiri' ? '131-00-1234567-8' :
+                                 selectedMethod === 'jago' ? '1002-3456-7890' :
+                                 selectedMethod === 'jenius' ? '9001-2345-678' : '0012-01-001234-567'}
+                              </span>
+                              <span className="text-[10px] text-slate-500 block font-medium mt-1">
+                                Atas Nama: <strong className="text-slate-700">HSR Technology Pratama</strong>
+                              </span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const noRek = selectedMethod === 'mandiri' ? '1310012345678' :
+                                              selectedMethod === 'jago' ? '100234567890' :
+                                              selectedMethod === 'jenius' ? '90012345678' : '001201001234567';
+                                handleCopyAccount(noRek, selectedMethod);
+                              }}
+                              className="p-1 px-2.5 border border-slate-200 rounded-lg bg-white hover:bg-slate-100 font-bold transition-all flex items-center gap-1.5 cursor-pointer text-[10px] text-slate-700 shadow-2xs shrink-0"
+                            >
+                              {copiedText === selectedMethod ? (
+                                <>
+                                  <IconCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                  <span className="text-emerald-700">Tersalin</span>
+                                </>
+                              ) : (
+                                <>
+                                  <IconCopy className="w-3.5 h-3.5 text-slate-400" />
+                                  <span>Salin</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                          <p className="text-[9px] leading-relaxed text-slate-400 italic border-t border-slate-150 pt-2 block">
+                            *Mohon sertakan ID Tiket <strong className="text-slate-600 font-bold font-mono">{activeTicket.id}</strong> di kolom berita/catatan transfer Anda untuk verifikasi instan.
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Confirmation form fields */}
+                      <div className="space-y-3.5 pt-3 border-t border-slate-200">
+                        {/* Sender's name */}
+                        <div className="space-y-1 text-left">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Nama Pengirim / Pemilik Rekening *</label>
+                          <input
+                            type="text"
+                            value={senderName}
+                            onChange={(e) => {
+                              setSenderName(e.target.value);
+                              if (paymentErrors.senderName) {
+                                setPaymentErrors(prev => ({ ...prev, senderName: undefined }));
+                              }
+                            }}
+                            placeholder="Contoh: Hasan Suryaman"
+                            className={`w-full h-9 px-3 text-xs rounded-xl border font-sans text-slate-850 placeholder-slate-400 bg-white focus:outline-none focus:ring-2 transition-all ${
+                              paymentErrors.senderName 
+                                ? 'border-rose-400 focus:ring-rose-500/10 focus:border-rose-400' 
+                                : 'border-slate-200 focus:ring-indigo-500/10 focus:border-indigo-550'
+                            }`}
+                          />
+                          {paymentErrors.senderName && (
+                            <span className="text-rose-600 text-[10px] block mt-0.5">{paymentErrors.senderName}</span>
+                          )}
+                        </div>
+
+                        {/* Amount */}
+                        <div className="space-y-1 text-left">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Nominal yang Ditransfer (Rupiah) *</label>
+                          <div className="relative">
+                            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[11px] font-bold text-slate-400">Rp</span>
+                            <input
+                              type="number"
+                              value={transferAmount}
+                              onChange={(e) => {
+                                setTransferAmount(e.target.value);
+                                if (paymentErrors.transferAmount) {
+                                  setPaymentErrors(prev => ({ ...prev, transferAmount: undefined }));
+                                }
+                              }}
+                              placeholder="Contoh: 750000"
+                              className={`w-full h-9 pl-9 pr-3 text-xs rounded-xl border font-sans text-slate-850 placeholder-slate-400 bg-white focus:outline-none focus:ring-2 transition-all font-mono ${
+                                paymentErrors.transferAmount 
+                                  ? 'border-rose-400 focus:ring-rose-500/10 focus:border-rose-400' 
+                                  : 'border-slate-200 focus:ring-indigo-500/10 focus:border-indigo-550'
+                              }`}
+                            />
+                          </div>
+                          {paymentErrors.transferAmount && (
+                            <span className="text-rose-600 text-[10px] block mt-0.5">{paymentErrors.transferAmount}</span>
+                          )}
+                        </div>
+
+                        {/* File upload */}
+                        <div className="space-y-1 text-left">
+                          <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">Unggah Bukti Transfer *</label>
+                          
+                          {receiptFileBase64 ? (
+                            <div className="relative border rounded-xl p-2 bg-slate-50 flex items-center justify-between shadow-2xs">
+                              <div className="flex items-center gap-2 truncate">
+                                <div className="w-10 h-10 border bg-white rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+                                  <img src={receiptFileBase64} className="h-full object-contain" alt="Receipt Preview" referrerPolicy="no-referrer" />
+                                </div>
+                                <div className="truncate text-left">
+                                  <p className="text-[10px] font-bold text-slate-700 truncate">{receiptFileName || 'bukti.jpg'}</p>
+                                  <span className="text-[9px] text-slate-400 block font-mono">Tersimpan</span>
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setReceiptFileBase64(null);
+                                  setReceiptFileName('');
+                                }}
+                                className="text-[10px] text-slate-400 hover:text-rose-600 font-bold p-1 px-2.5 border rounded-lg bg-white hover:bg-slate-100 transition-all cursor-pointer shadow-3xs"
+                              >
+                                Hapus
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="relative">
+                              <label
+                                className={`border-2 border-dashed rounded-xl p-4.5 flex flex-col items-center justify-center gap-1.5 cursor-pointer transition-all ${
+                                  paymentErrors.receipt 
+                                    ? 'border-rose-400 bg-rose-50/10 hover:bg-rose-50/25' 
+                                    : 'border-slate-200 hover:border-slate-350 hover:bg-slate-50'
+                                }`}
+                              >
+                                <input 
+                                  type="file" 
+                                  accept="image/*" 
+                                  onChange={handleReceiptFileChange}
+                                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                                />
+                                <IconUpload className={`w-6 h-6 ${paymentErrors.receipt ? 'text-rose-400' : 'text-slate-400'}`} />
+                                <span className="text-[10px] font-bold text-slate-650 text-center">Pilih / Tarik Foto Bukti Transfer</span>
+                                <span className="text-[9px] text-slate-400 text-center font-medium font-sans">Sistem mendukung JPEG, JPG, atau PNG</span>
+                              </label>
+                            </div>
+                          )}
+                          {paymentErrors.receipt && (
+                            <span className="text-rose-600 text-[10px] block mt-0.5">{paymentErrors.receipt}</span>
+                          )}
+                        </div>
+
+                        {/* Submit Button */}
+                        <div className="pt-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              submitPaymentConfirmation();
+                            }}
+                            className="w-full h-10 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all duration-300"
+                          >
+                            <IconSend className="w-4 h-4 text-emerald-100 animate-pulse" />
+                            <span>Kirim Konfirmasi Pembayaran</span>
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
+                  )}
+
+                </div>
+              </motion.div>
+            </div>
           )}
         </AnimatePresence>
 

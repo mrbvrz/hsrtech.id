@@ -176,6 +176,58 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
     }
   };
 
+  // Verify and Approve/Decline manual payment confirmation
+  const handleVerifyPayment = (ticketId: string, approve: boolean) => {
+    const isDemo = ['HSR-7023-4567', 'HSR-1092-2345'].includes(ticketId);
+
+    if (isDemo) {
+      const overridesStr = localStorage.getItem('hsr_demo_overrides') || '{}';
+      try {
+        const overrides = JSON.parse(overridesStr);
+        if (!overrides[ticketId]) {
+          overrides[ticketId] = { paymentStatus: 'belum_bayar' };
+        }
+        overrides[ticketId].paymentStatus = approve ? 'lunas' : 'belum_bayar';
+        if (!approve) {
+          delete overrides[ticketId].paymentProof;
+        }
+        localStorage.setItem('hsr_demo_overrides', JSON.stringify(overrides));
+      } catch (e) {
+        console.error("Gagal menyimpan override pembayaran demo", e);
+      }
+    }
+
+    const updated = reservations.map(res => {
+      if (res.id === ticketId) {
+        if (approve) {
+          return { ...res, paymentStatus: 'lunas' as const };
+        } else {
+          const { paymentProof, ...rest } = res;
+          return { ...rest, paymentStatus: 'belum_bayar' as const };
+        }
+      }
+      return res;
+    });
+
+    setReservations(updated);
+    localStorage.setItem('hsr_reservations', JSON.stringify(updated));
+
+    if (selectedTicket && selectedTicket.id === ticketId) {
+      if (approve) {
+        setSelectedTicket({
+          ...selectedTicket,
+          paymentStatus: 'lunas',
+        });
+      } else {
+        const { paymentProof, ...rest } = selectedTicket;
+        const updatedTicket = { ...rest, paymentStatus: 'belum_bayar' as const };
+        setSelectedTicket(updatedTicket);
+      }
+    }
+
+    addLog(`Hasil verifikasi pembayaran tiket ${ticketId}: ${approve ? 'DISETUJUI (LUNAS)' : 'DITOLAK'}`);
+  };
+
   // Add Catatan Internal (Saves directly to ticket notes or logs)
   const handleSaveInternalNote = (ticketId: string) => {
     if (!internalNotes.trim()) return;
@@ -814,6 +866,74 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                                   </div>
                                 </div>
 
+                                {/* MANUAL PAYMENT VERIFICATION PORTAL */}
+                                {selectedTicket.paymentStatus === 'menunggu_verifikasi' && (
+                                  <div className="bg-gradient-to-r from-amber-50 to-orange-50/30 border border-amber-200 rounded-2xl p-5 shadow-xs space-y-4 text-left">
+                                    <div className="flex items-center justify-between">
+                                      <div className="flex items-center gap-2">
+                                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
+                                        <h3 className="font-sans font-extrabold text-amber-950 text-xs uppercase tracking-wider">Verifikasi Pembayaran Manual</h3>
+                                      </div>
+                                      <span className="text-[10px] bg-amber-100 text-amber-850 px-2.5 py-0.5 rounded font-black font-sans uppercase">MOHON TINJAU</span>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 border border-amber-150 rounded-xl text-xs font-sans">
+                                      <div className="space-y-0.5">
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wide block">Metode Pembayaran</span>
+                                        <span className="text-slate-800 font-black text-sm">{selectedTicket.paymentProof?.method || 'N/A'}</span>
+                                      </div>
+                                      <div className="space-y-0.5">
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wide block">Nama Pengirim</span>
+                                        <span className="text-slate-800 font-black text-sm truncate block">{selectedTicket.paymentProof?.senderName || 'N/A'}</span>
+                                      </div>
+                                      <div className="space-y-0.5">
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wide block">Jumlah Transfer</span>
+                                        <span className="text-zinc-900 font-black text-sm font-mono block">Rp {(selectedTicket.paymentProof?.amount || 150000).toLocaleString('id-ID')}</span>
+                                      </div>
+                                      <div className="space-y-0.5">
+                                        <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wide block">Tanggal Konfirmasi</span>
+                                        <span className="text-slate-700 font-extrabold block truncate text-[11px]">{selectedTicket.paymentProof?.uploadedAt || 'N/A'}</span>
+                                      </div>
+                                    </div>
+
+                                    {selectedTicket.paymentProof?.receiptImage && (
+                                      <div className="space-y-1.5">
+                                        <span className="text-[10px] text-slate-405 font-bold uppercase tracking-wide block">File Lampiran Bukti Transfer:</span>
+                                        <div className="relative group bg-white border border-slate-150 rounded-xl overflow-hidden shadow-2xs max-h-48 flex justify-center items-center p-3">
+                                          <img 
+                                            src={selectedTicket.paymentProof.receiptImage} 
+                                            className="max-h-40 object-contain hover:scale-[1.02] cursor-pointer transition-all duration-300" 
+                                            alt="Uploaded Receipt"
+                                            referrerPolicy="no-referrer"
+                                            onClick={() => {
+                                              const win = window.open();
+                                              if (win && selectedTicket.paymentProof?.receiptImage) {
+                                                win.document.write(`<img src="${selectedTicket.paymentProof.receiptImage}" style="max-height:100%; max-width:100%; border-radius:8px;" />`);
+                                              }
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
+                                    )}
+
+                                    <div className="flex gap-2 pt-1">
+                                      <button
+                                        onClick={() => handleVerifyPayment(selectedTicket.id, true)}
+                                        className="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5"
+                                      >
+                                        <IconCheck className="w-4 h-4" />
+                                        <span>Setujui Pembayaran (Lunas)</span>
+                                      </button>
+                                      <button
+                                        onClick={() => handleVerifyPayment(selectedTicket.id, false)}
+                                        className="py-1.5 px-4.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs rounded-xl transition-all cursor-pointer border"
+                                      >
+                                        Tolak
+                                      </button>
+                                    </div>
+                                  </div>
+                                )}
+
                                 {/* 2. OPPORTUNITY DETAILS GRID CARD */}
                                 <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6 text-left">
                                   <div>
@@ -862,6 +982,29 @@ export default function Login({ onLoginSuccess, onNavigateHome, userRole, onLogo
                                       <div className="space-y-1">
                                         <span className="text-[10px] text-slate-400 uppercase tracking-widest font-extrabold block">Competitor Pricing</span>
                                         <span className="text-xs font-extrabold text-emerald-600">Garansi HSR 30 Hari</span>
+                                      </div>
+                                      <div className="space-y-1 col-span-2 md:col-span-4 border-t border-dashed border-slate-100 pt-3 flex items-center justify-between">
+                                        <span className="text-[10px] text-slate-400 uppercase tracking-widest font-extrabold block">Payment Status</span>
+                                        <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wide border ${
+                                          selectedTicket.paymentStatus === 'lunas'
+                                            ? 'bg-emerald-50 text-emerald-600 border-emerald-200/60'
+                                            : selectedTicket.paymentStatus === 'menunggu_verifikasi'
+                                              ? 'bg-amber-50 text-amber-700 border-amber-200/60 animate-pulse'
+                                              : selectedTicket.paymentStatus === 'dp_50%'
+                                                ? 'bg-blue-50 text-blue-600 border-blue-200/60'
+                                                : 'bg-rose-50 text-rose-600 border-rose-200/60'
+                                        }`}>
+                                          <span className={`w-1 h-1 rounded-full ${
+                                            selectedTicket.paymentStatus === 'lunas'
+                                              ? 'bg-emerald-500'
+                                              : selectedTicket.paymentStatus === 'menunggu_verifikasi'
+                                                ? 'bg-amber-500'
+                                                : selectedTicket.paymentStatus === 'dp_50%'
+                                                  ? 'bg-blue-500'
+                                                  : 'bg-rose-500'
+                                          }`} />
+                                          {selectedTicket.paymentStatus === 'menunggu_verifikasi' ? 'menunggu verifikasi' : (selectedTicket.paymentStatus || 'belum_bayar').replace('_', ' ')}
+                                        </span>
                                       </div>
                                     </div>
                                   </div>

@@ -123,9 +123,9 @@ export default function Portfolio({ onNavigate, isStandalone = false }: Portfoli
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90"
                   />
                   
-                  {/* High-Contrast Blue Brand Tint Overlay (Uniform blue tint across all photos) */}
-                  <div className="absolute inset-0 bg-brand-blue/22 mix-blend-multiply transition-colors duration-300 pointer-events-none z-10 group-hover:bg-brand-blue/15" />
-                  <div className="absolute inset-0 bg-brand-blue/12 transition-colors duration-300 pointer-events-none z-10 group-hover:bg-brand-blue/8" />
+                  {/* Elegant White Tint Overlay */}
+                  <div className="absolute inset-0 bg-white/10 transition-colors duration-300 pointer-events-none z-10 group-hover:bg-white/20" />
+                  <div className="absolute inset-0 bg-white/5 transition-colors duration-300 pointer-events-none z-10 group-hover:bg-white/0" />
                   
                   {/* Category Tag */}
                   <div className="absolute top-4 left-4 flex gap-2">
