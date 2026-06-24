@@ -354,7 +354,7 @@ export default function WhyUs() {
   const row2Double = [...row2, ...row2, ...row2];
 
   return (
-    <section id="process" className="pt-0 pb-24 bg-slate-50 relative overflow-hidden">
+    <section id="process" className="pt-0 pb-24 bg-transparent relative overflow-hidden">
       
       {/* Decorative grids & blurred background blobs */}
       <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none" />

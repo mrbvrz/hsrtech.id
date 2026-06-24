@@ -573,7 +573,7 @@ Anda pada layanan resmi HSR Technology!
   };
 
   return (
-    <div className="font-sans min-h-[90vh] bg-slate-50 pt-28 pb-16">
+    <div className="font-sans min-h-[90vh] bg-transparent pt-28 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Animated Headline Gate */}

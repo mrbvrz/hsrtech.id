@@ -105,7 +105,7 @@ export default function Navbar({
       <header 
         id="main-header"
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          (isScrolled || currentView !== 'home') 
+          isScrolled
             ? 'glass-nav-scrolled py-3.5 backdrop-blur-md' 
             : 'bg-transparent border-b border-transparent py-5'
         }`}

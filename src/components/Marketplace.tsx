@@ -361,7 +361,7 @@ export default function Marketplace() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pt-24 pb-16 font-sans relative overflow-x-clip">
+    <div className="bg-transparent min-h-screen pt-24 pb-16 font-sans relative overflow-x-clip">
       {/* Premium Decorative Blur Background Blobs */}
       <div className="absolute top-[5%] left-[-15%] w-[40rem] h-[40rem] rounded-full bg-blue-300/15 blur-[140px] pointer-events-none z-0" />
       <div className="absolute top-[35%] right-[-15%] w-[45rem] h-[45rem] rounded-full bg-teal-200/15 blur-[150px] pointer-events-none z-0" />

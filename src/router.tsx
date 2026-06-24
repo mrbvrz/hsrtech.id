@@ -214,7 +214,7 @@ function RootComponent() {
 
   return (
     <LegalDrawerProvider>
-      <div className="relative min-h-screen bg-white">
+      <div className="relative min-h-screen bg-gradient-to-br from-[#fafbfd] via-[#f3f6fc] to-[#e6effd]">
         
         {/* Sticky Navbar (with computed active tab paths) */}
         {!isLoginPath && (

@@ -163,7 +163,7 @@ Mohon segera diproses lebih lanjut, terima kasih!`;
   return (
     <section 
       id="booking" 
-      className="py-13 sm:py-24 bg-white relative overflow-hidden"
+      className="py-13 sm:py-24 bg-transparent relative overflow-hidden"
     >
       {/* Background gradients decor */}
       <div className="absolute top-1/2 right-0 w-80 h-80 rounded-full bg-blue-500/5 blur-3xl -z-10" />
